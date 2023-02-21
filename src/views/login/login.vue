@@ -33,16 +33,20 @@
 </template>
 
 <script setup>
-// 导入
+// 导入插件
 import { ref } from 'vue';
 import { showToast } from 'vant';
 import userLogMessage from "@/store/models/user-mes"
+import { useRouter } from 'vue-router';
 
 // 导入数据表
 import requestingDB from "@/database/index"
 
 // 导入store用户登录信息
 const userLog = userLogMessage()
+
+// 导入路由
+const router = useRouter()
 
 // 获取到查询数据
 // const result = await requestingDB.getUserMesDB("denny-admin")
@@ -53,7 +57,7 @@ const userLog = userLogMessage()
 const userName = ref('')
 const userPw = ref('')
 
-
+// 2 step
 // fn: 验证用户信息
 const confirmLogMes = async (userN, userP) => {
   var confirmUserN = userN
@@ -61,14 +65,13 @@ const confirmLogMes = async (userN, userP) => {
   // 获取到用户数据表信息
   // 把用户输入的用户名传递到数据表查询，是否存在该用户
   var resultDB = await requestingDB.getUserMesDB(confirmUserN)
-  console.log(typeof(resultDB[0].user_pw))
 
   // 进行匹配，如果信息不匹配，数据库会传过来空值
-  if (!resultDB) {
+  if (!resultDB[0]) {
     showToast('不存在该用户')
   } else {
     // 若用户存在，则判断密码是否正确
-    if (resultDB[0].user_pw !== toString(confirmUserP)) {
+    if (resultDB[0].user_pw !== confirmUserP) {
       showToast('用户信息不匹配，请重新输入')
     } else {
       // 若所有信息正确
@@ -76,12 +79,16 @@ const confirmLogMes = async (userN, userP) => {
       // 将用户的id录入store中
       userLog.userId = resultDB[0]._id
       // 然后返回主页shop
+      // 3 step
+      router.push({
+        path: "/shop"
+      })
     }
   }
 }
 
 
-// 当用户所有信息输入完整时，点击登录返回Shop
+// 1 step: 当用户所有信息输入完整时，点击登录返回Shop
 // 发生点击登录
 const loginClick = () => {
   if (userName.value === "" || userPw.value === ""){
@@ -93,16 +100,6 @@ const loginClick = () => {
     confirmLogMes(userName.value, userPw.value)
   }
 }
-
-
-
-// 当用户点击注册时，跳转注册页面
-
-// 先获取到store中的userId
-
-
-
-// 
 
 </script>
 

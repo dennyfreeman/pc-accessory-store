@@ -4,14 +4,14 @@
     <van-dialog v-model:show="show" title="标题" show-cancel-button></van-dialog>
     
     <router-view></router-view>
-    <tab-bar></tab-bar>
+    <tab-bar v-if="!route.meta.hideTabBar"></tab-bar>
     
   </div>
 
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import TabBar from "@/components/tab-bar/tab-bar.vue"
 
 // 导入用户登录全局store
@@ -20,12 +20,14 @@ import userLogMessage from "@/store/models/user-mes"
 import { showDialog } from 'vant'
 
 const router = useRouter()
+const route = useRoute()
 
 // 1. 判断用户是否已登录
 // 模拟数据
 const userLog = userLogMessage()
 // 把现在store中已经有的用户id返回查询，确认是否登录
 const useridLoged = userLog.userId
+
 // 若未登录则弹出弹窗前往登录页面
 if (!useridLoged) {
   // 跳转到登录页

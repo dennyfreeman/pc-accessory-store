@@ -9,7 +9,14 @@ const router = createRouter({
     },
     {
       path: "/shop",
-      component: () => import("@/views/shop/shop.vue")
+      component: () => import("@/views/shop/shop.vue"),
+    },
+    {
+      path: "/shop-budget-p1",
+      component: () => import("@/views/shop/shop-budget-p1/shop-budget-p1.vue"),
+      meta: {
+        hideTabBar: true
+      }
     },
     {
       path: "/order",
@@ -21,11 +28,10 @@ const router = createRouter({
     },
     {
       path: "/login",
-      component: () => import("@/views/login/login.vue")
-    },
-    {
-      path: "/login",
-      component: () => import("@/views/login/login.vue")
+      component: () => import("@/views/login/login.vue"),
+      meta: {
+        hideTabBar: true
+      }
     }
   ]
 })
