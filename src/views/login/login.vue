@@ -36,43 +36,50 @@
 // 导入
 import { ref } from 'vue';
 import { showToast } from 'vant';
+import userLogMessage from "@/store/models/user-mes"
 
 // 导入数据表
 import requestingDB from "@/database/index"
 
-// 获取到查询数据
-const result = await requestingDB.getUserMesDB("denny-admin")
+// 导入store用户登录信息
+const userLog = userLogMessage()
 
-// console.log(result[0].user_pw)
+// 获取到查询数据
+// const result = await requestingDB.getUserMesDB("denny-admin")
+// console.log(result[0])
+// const userMesDb = result[0]
 
 // 获取用户填入信息
 const userName = ref('')
 const userPw = ref('')
 
-// 模拟db信息
-const userMesDb = {
-  "user_name": "denny",
-  "user_pw": "1234",
-  "openid": "1234455"
-}
 
 // fn: 验证用户信息
-const confirmLogMes = (userN, userP) => {
+const confirmLogMes = async (userN, userP) => {
+  var confirmUserN = userN
+  var confirmUserP = userP
   // 获取到用户数据表信息
-  // var userNameDb = userMesDb.user_name
-  // var userPwDb = userMesDb.user_pw
-  // var useridDb = userMesDb.openid
+  // 把用户输入的用户名传递到数据表查询，是否存在该用户
+  var resultDB = await requestingDB.getUserMesDB(confirmUserN)
+  console.log(typeof(resultDB[0].user_pw))
 
   // 进行匹配，如果信息不匹配，数据库会传过来空值
-
-
-  // 若用户存在，返回正确
-  
-
-  // 若用户不存在，则返回不存在
-
-  // 若用户信息错误，则返回重新输入
+  if (!resultDB) {
+    showToast('不存在该用户')
+  } else {
+    // 若用户存在，则判断密码是否正确
+    if (resultDB[0].user_pw !== toString(confirmUserP)) {
+      showToast('用户信息不匹配，请重新输入')
+    } else {
+      // 若所有信息正确
+      showToast('登录成功')
+      // 将用户的id录入store中
+      userLog.userId = resultDB[0]._id
+      // 然后返回主页shop
+    }
+  }
 }
+
 
 // 当用户所有信息输入完整时，点击登录返回Shop
 // 发生点击登录
@@ -84,7 +91,6 @@ const loginClick = () => {
   } else {
     // 验证用户信息是否匹配
     confirmLogMes(userName.value, userPw.value)
-    showToast('登录成功')
   }
 }
 

@@ -24,7 +24,8 @@ const router = useRouter()
 // 1. 判断用户是否已登录
 // 模拟数据
 const userLog = userLogMessage()
-const useridLoged = ""
+// 把现在store中已经有的用户id返回查询，确认是否登录
+const useridLoged = userLog.userId
 // 若未登录则弹出弹窗前往登录页面
 if (!useridLoged) {
   // 跳转到登录页
@@ -45,7 +46,7 @@ if (!useridLoged) {
 }
 else {
   // 已登录的话，获取用户的_openid，并放到store中
-  userLog.userId = useridLoged
+  console.log(useridLoged)
 }
 
 

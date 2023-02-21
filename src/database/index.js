@@ -15,19 +15,21 @@ async function login() {
   console.log(loginState.isAnonymousAuth); // true
 }
 
+// 开始登录云数据库
 login()
 
 var db = app.database()
 
 // 获取来源数据表
-const collectionPcStore = "user-pcstore"
+// 用户表
+const collectionPcStoreUserList = "user-pcstore"
 
 // 定义不同的数据表操作方式
 class requestingDB {
   // 查询用户表
   getUserMesDB(userName) {
     return new Promise((resolve, reject) => {
-      db.collection(collectionPcStore)
+      db.collection(collectionPcStoreUserList)
       .where({
         "user_name": userName
       })
