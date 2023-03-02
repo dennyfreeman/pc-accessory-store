@@ -1,0 +1,31 @@
+{
+  "product_id": "cpu_pcstore_intel_i5_12400f",
+  "total_cores": 6,
+  "total_threads": 12,
+  "max_trubo": "4.40GHz",
+  "firm": "INTEL",
+  "model_name": "i5-12400F",
+  "plugs_type": "FCLGA1700",
+  "plugs_marktype": "LGA1700",
+  "plugs_id": "cpu_md_FCLGA1700_001",
+  "other_params": {
+    "ram": "19MB",
+    "instruction_set": "64-bit"
+  },
+  "price": 1189,
+  "rated_prower": 65,
+  "max_prower": 117,
+  "max_mem_size": "128GB",
+  "mem_type": [
+    {
+      "type": "DDR5",
+      "rate": "4800"
+    },
+    {
+      "type": "DDR4",
+      "rate": "3200"
+    }
+  ],
+  "mark": "19722"
+}
+

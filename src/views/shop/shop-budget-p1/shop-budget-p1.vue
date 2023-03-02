@@ -25,10 +25,27 @@
       </div>
     </div>
 
+
     <!-- 预算金额滑块 -->
     <div class="budget-slider">
-      <van-slider v-model="budgetValue" @change="onChange" />
+      <van-slider 
+        v-model="budgetValue" 
+        @change="onChange" 
+        bar-height="10px"
+        :step="100"
+        :min="1000"
+        :max="15000"
+      >
+      </van-slider>
     </div>
+
+    <!-- 展示金额 -->
+    <div class="show-budget">
+      <span class="text">￥</span>
+      <span class="counter">{{ budgetValue }}</span>
+    </div>
+
+    <!-- 下一步按钮 -->
 
   </div>
 </template>
@@ -90,6 +107,31 @@ const budgetValue = ref(50)
     .text2 {
       margin-top: 10px;
       font-size: 24px;
+    }
+  }
+
+  .budget-slider {
+    width: 89%;
+    margin: 0 auto;
+    padding-top: 60px;
+    .slider-button{
+    }
+  }
+
+  .show-budget {
+    width: 80%;
+    background-color: #fff;
+    margin: 0 auto;
+    margin-top: 60px;
+    text-align: center;
+    border-radius: 10px;
+
+    .text {
+      font-size: 30px;
+    }
+
+    .counter{
+      font-size: 90px;
     }
   }
 </style>

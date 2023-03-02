@@ -1,0 +1,19 @@
+{
+  "product_id": "gpu_pcstore_nv_gtx1660s_6_001",
+  "bit": 192,
+  "cude": 1408,
+  "firm": "NVIDIA",
+  "grade": "85",
+  "model_name": "GTX 1660 SUPER",
+  "other_params": {
+    "pin": "8pin",
+    "plugs_type": "pcie_3",
+    "ram": "6GB",
+    "ram_type": "GDDR6"
+  },
+  "plugs_id": "pcie_3_mb_001",
+  "price": 699,
+  "rated_prower": 125,
+  "recommended_prower": "450",
+  "score": "270336"
+}

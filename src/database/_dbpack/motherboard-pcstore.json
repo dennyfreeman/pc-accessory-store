@@ -1,0 +1,20 @@
+{
+  "product_id": "motherboard_pcstore_msi_MAG_B660M_MORTAR_WIFI",
+  "firm": "msi",
+  "model_name": "MAG B660M MORTAR WIFI DDR4",
+  "cpu_plugs_type": "FCLGA1700",
+  "cpu_plugs_marktype": "LGA1700",
+  "cpu_plugs_id": "cpu_md_FCLGA1700_001",
+  "other_params": {
+    "harddrive_m2": 2,
+    "harddrive_sata3": 6,
+    "wifi": "Intel WIFI 6"
+  },
+  "price": 799,
+  "rated_prower": 65,
+  "max_prower": 117,
+  "max_mem_size": "128GB",
+  "mem_plugs_count": 4,
+  "mem_speed": "4800"
+}
+
