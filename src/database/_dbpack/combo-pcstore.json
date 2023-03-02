@@ -1,8 +1,9 @@
 {
-  "comboId": "",
-  "name": "",
-  "desc": "",
-  "product": {
+  "comboId": "combo_pcstore_c001_p_3404",
+  "name": "中高端游戏型组合",
+  "desc": "c001_适合普通的中高端游戏群体",
+  "total_price": 3404,
+  "products": {
     "cpu": {
       "product_id": "cpu_pcstore_intel_i5_12400f",
       "model_name": "i5-12400F",
@@ -32,7 +33,20 @@
       "max_power": 550
     },
     "ram": {
-      
+      "model_name": "FURY_DDR4_2666_8G",
+      "price": 149,
+      "firm": "Kingston",
+      "DDR": "DDR4",
+      "memory_size": "8GB",
+      "product_id": "mem_pcstore_kingston_FURY_DDR4_2666_8G"
+    },
+    "harddrive": {
+      "product_id": "harddrive_pcstore_Seagate_ST1000DM010",
+      "plugs_type": "SATA",
+      "price": 289,
+      "firm": "Seagate",
+      "model_name": "ST1000DM010",
+      "memory_size": "1TB"
     }
   }
 }

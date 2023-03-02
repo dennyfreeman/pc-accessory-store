@@ -19,6 +19,9 @@ const budget = budgetStore.budget
 console.log(budget)
 
 // 根据金额大小，查询数据库是否存在更小的套餐
+// 查询现有套餐的所有金额，并归类一个数组里
+
+// 对比预算金额
 
 // 把所有套餐信息获取下来
 

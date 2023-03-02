@@ -26,9 +26,12 @@ var db = app.database()
 // 获取来源数据表
 // 用户表
 const collectionPcStoreUserList = "user-pcstore"
+// 套餐表
+const collectionPcStoreComboList = "combo-pcstore"
 
 // 定义不同的数据表操作方式
 class requestingDB {
+
   // 查询用户表
   getUserMesDB(userName) {
     return new Promise((resolve, reject) => {
@@ -39,6 +42,23 @@ class requestingDB {
       .get()
       .then(res => {
         // 返回数据给前台
+        resolve(res.data)
+      }).catch(err => {
+        reject(err)
+      })
+    })
+  }
+
+  // 查询套餐表
+  getComboListDB(price) {
+    return new Promise((resolve, reject) => {
+      db.collection(collectionPcStoreComboList)
+      .where({
+        // 这里直接在数据表判断小于预算的价格套餐
+        total_price: _lte(price)
+      })
+      .get()
+      .then(res => {
         resolve(res.data)
       }).catch(err => {
         reject(err)
