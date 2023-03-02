@@ -1,6 +1,9 @@
 // 腾讯云数据库数据表获取
 import cloudbase from "@cloudbase/js-sdk"
 
+/**
+ * 在这里打开登录权限
+ */
 // const app = cloudbase.init({
 //   env: "dennyfm-database-2f6chf3199fa734",
 //   region: "ap-guangzhou"

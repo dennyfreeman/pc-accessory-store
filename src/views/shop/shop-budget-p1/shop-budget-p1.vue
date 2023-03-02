@@ -46,6 +46,16 @@
     </div>
 
     <!-- 下一步按钮 -->
+    <div class="btn-nextpage">
+      <div class="btn">
+        <van-button 
+          type="primary" 
+          size="large"
+          color="linear-gradient(270deg, #84fab0 0%, #8fd3f4 100%)"
+          @click="nextPageClick"
+          >下一步</van-button>
+      </div>
+    </div>
 
   </div>
 </template>
@@ -54,8 +64,35 @@
 // 导入
 import { ref } from 'vue';
 import { showToast } from 'vant';
+import { useRouter } from 'vue-router';
 
+// 导入用户和预算store
+import userLogMessage from "@/store/models/user-mes"
+import userBudgetStore from "@/store/models/user-budget/user-budget"
+import { routerViewLocationKey } from 'vue-router';
+
+const router = useRouter()
+
+// 获取登录用户信息
+const logedUser = userLogMessage()
+const userId = logedUser.userId
+// 把当前用户记录到预算store中
+const budgetStore = userBudgetStore()
+budgetStore.userId = userId
+
+// 获取当前动态预算
 const budgetValue = ref(50)
+
+
+// 点击按钮后，将预算的金额首先提交到store中
+const nextPageClick = () => {
+  // 将预算金额提交到store中
+  budgetStore.budget = budgetValue.value
+  console.log(budgetStore.budget)
+  // 并跳转到下一个页面中
+  router.push("/shop-budget-p2")
+}
+
 
 </script>
 
@@ -133,5 +170,21 @@ const budgetValue = ref(50)
     .counter{
       font-size: 90px;
     }
+
+    
   }
+
+  .btn {
+    font-size: 48px;
+
+    --van-button-large-height: 100px;
+    --van-button-default-font-size: 24px;
+
+    margin: 0 auto;
+    margin-top: 50px;
+    width: 80%;
+    -webkit-box-shadow: 7px 11px 10px 1px rgba(0,0,0,0.225); 
+    box-shadow: 7px 11px 10px 1px rgba(0,0,0,0.225);
+  }
+  
 </style>

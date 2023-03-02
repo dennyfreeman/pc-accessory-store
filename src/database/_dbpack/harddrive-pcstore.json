@@ -1,0 +1,11 @@
+{
+  "product_id": "harddrive_pcstore_Seagate_ST4000DM004",
+  "firm": "Seagate",
+  "model_name": "ST4000DM004",
+  "plugs_type": "SATA",
+  "cache": "256MB",
+  "memory_size": "4TB",
+  "rpm": "5400rpm",
+  "harddrive_size": "3.5inch",
+  "price": 539
+}

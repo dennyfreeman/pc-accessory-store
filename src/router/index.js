@@ -19,6 +19,13 @@ const router = createRouter({
       }
     },
     {
+      path: "/shop-budget-p2",
+      component: () => import("@/views/shop/shop-budget-p2/shop-budget-p2.vue"),
+      meta: {
+        hideTabBar: true
+      }
+    },
+    {
       path: "/order",
       component: () => import("@/views/order/order.vue")
     },

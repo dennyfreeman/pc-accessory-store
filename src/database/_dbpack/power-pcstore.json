@@ -1,19 +1,17 @@
 {
-  "product_id": "motherboard_pcstore_msi_MAG_B660M_MORTAR_WIFI",
+  "product_id": "power_segotep_AN550W",
   "firm": "Segotep",
-  "model_name": "MAG B660M MORTAR WIFI DDR4",
-  "cpu_plugs_type": "FCLGA1700",
-  "cpu_plugs_marktype": "LGA1700",
-  "cpu_plugs_id": "cpu_md_FCLGA1700_001",
-  "other_params": {
-    "harddrive_m2": 2,
-    "harddrive_sata3": 6,
-    "wifi": "Intel WIFI 6"
+  "model_name": "AN550W",
+  "max_power": 550,
+  "plugs": {
+    "main_pin_plugs": "24",
+    "SATA_plugs": "3",
+    "cpu_12v_plugs": "1",
+    "pcie_pin_plugs": "20"
   },
-  "price": 799,
-  "rated_prower": 65,
-  "max_prower": 117,
-  "max_mem_size": "128GB",
-  "mem_plugs_count": 4,
-  "mem_speed": "4800"
+  "other_params": {
+    "power_type": "ATX",
+    "3c_model": "SG-D650A"
+  },
+  "price": 279
 }

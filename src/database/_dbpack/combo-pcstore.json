@@ -1,0 +1,38 @@
+{
+  "comboId": "",
+  "name": "",
+  "desc": "",
+  "product": {
+    "cpu": {
+      "product_id": "cpu_pcstore_intel_i5_12400f",
+      "model_name": "i5-12400F",
+      "firm": "INTEL",
+      "price": 1189,
+      "plugs_id": "cpu_md_FCLGA1700_001"
+    },
+    "gpu": {
+      "product_id": "gpu_pcstore_nv_gtx1660s_6_001",
+      "firm": "NVIDIA",
+      "model_name": "GTX 1660 SUPER",
+      "plugs_id": "pcie_3_mb_001",
+      "price": 699
+    },
+    "motherboard": {
+      "product_id": "motherboard_pcstore_msi_MAG_B660M_MORTAR_WIFI",
+      "firm": "msi",
+      "model_name": "MAG B660M MORTAR WIFI DDR4",
+      "cpu_plugs_id": "cpu_md_FCLGA1700_001",
+      "price": 799
+    },
+    "power": {
+      "product_id": "power_segotep_AN550W",
+      "firm": "Segotep",
+      "model_name": "AN550W",
+      "price": 279,
+      "max_power": 550
+    },
+    "ram": {
+      
+    }
+  }
+}

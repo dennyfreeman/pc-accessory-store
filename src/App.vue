@@ -39,7 +39,7 @@ if (!useridLoged) {
   }).then(() => {
     // on close
     console.log("跳转到登录页")
-    userLog.userId = "getLog"
+    userLog.userId = "getlog"
     // 前往登录页面
     router.push({
       path: "/login"
