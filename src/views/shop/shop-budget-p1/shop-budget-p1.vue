@@ -120,13 +120,6 @@ const nextPageClick = () => {
           background-color: #000;
           padding: 10px 30px;
           border-radius: 30px;
-          .title-name {
-          
-          }
-
-          .user-name {
-
-          } 
         }
         
       }
@@ -151,8 +144,7 @@ const nextPageClick = () => {
     width: 89%;
     margin: 0 auto;
     padding-top: 60px;
-    .slider-button{
-    }
+    
   }
 
   .show-budget {
@@ -162,6 +154,8 @@ const nextPageClick = () => {
     margin-top: 60px;
     text-align: center;
     border-radius: 10px;
+    -webkit-box-shadow: inset 0px 10px 27px -8px #696969, -9px -8px 18px 0px rgba(0,0,0,0); 
+box-shadow: inset 0px 10px 27px -8px #696969, -9px -8px 18px 0px rgba(0,0,0,0);
 
     .text {
       font-size: 30px;

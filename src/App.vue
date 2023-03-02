@@ -23,9 +23,14 @@ const router = useRouter()
 const route = useRoute()
 
 // 1. 判断用户是否已登录
-// 模拟数据
 const userLog = userLogMessage()
 // 把现在store中已经有的用户id返回查询，确认是否登录
+
+/**
+ * 模拟登录数据，之后记得删除
+ */
+userLog.userId = "loged"
+
 const useridLoged = userLog.userId
 
 // 若未登录则弹出弹窗前往登录页面

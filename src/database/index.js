@@ -1,14 +1,10 @@
 // 腾讯云数据库数据表获取
 import cloudbase from "@cloudbase/js-sdk"
 
-/**
- * 在这里打开登录权限
- */
-// const app = cloudbase.init({
-//   env: "dennyfm-database-2f6chf3199fa734",
-//   region: "ap-guangzhou"
-// })
-
+const app = cloudbase.init({
+  env: "dennyfm-database-2f6chf3199fa734",
+  region: "ap-guangzhou"
+})
 const auth = app.auth()
 
 async function login() {
@@ -28,6 +24,9 @@ var db = app.database()
 const collectionPcStoreUserList = "user-pcstore"
 // 套餐表
 const collectionPcStoreComboList = "combo-pcstore"
+
+// 腾讯数据库查询指令
+const _ = db.command
 
 // 定义不同的数据表操作方式
 class requestingDB {
@@ -53,10 +52,6 @@ class requestingDB {
   getComboListDB(price) {
     return new Promise((resolve, reject) => {
       db.collection(collectionPcStoreComboList)
-      .where({
-        // 这里直接在数据表判断小于预算的价格套餐
-        total_price: _lte(price)
-      })
       .get()
       .then(res => {
         resolve(res.data)
