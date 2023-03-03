@@ -18,7 +18,7 @@
    
     <div class="btn">
       <button @click="getCombo">获取套餐</button>
-      <div>{{ comboNewList }}</div>
+      <!-- <div>{{ comboNewList }}</div> -->
     </div>
 
     <!-- 文字提示 -->
@@ -34,14 +34,57 @@
     <!-- 展示3个套餐 -->
     <div class="comboBox">
       <div class="content">
+        <!-- 若无任何一个匹配则弹出无可匹配信息 -->
+        <div class="none-mes" v-if="!comboNewList[0]">
+          <div class="content">
+            <div class="text">
+              <span>没有相匹配的套餐，请重新提供数据！</span>
+            </div>
+          </div>
+        </div>
 
-        <div class="item" @click="showDetail1 = true" >
+        <!-- 数据存在再显示正确信息 -->
+        <div class="item" @click="showDetail1 = true" v-if="comboNewList[0]">
           <!-- 遮蔽层显示详细数据 -->
           <van-overlay :show="showDetail1"  @click="showDetail1 = false">
             <div class="wrapper" @click.stop @click="showDetail1 = false">
               <div class="block" >
+                <div class="title">
+                  <span>套餐一  详细信息：</span>
+                </div>
                 <!-- 展示详细信息 -->
-                dsfas
+                <div class="block_content">
+                  <div class="li">
+                    <span>CPU</span>
+                    <span>品牌：{{ comboNewList[0]?.products.cpu.firm }}</span>
+                    <span>型号：{{ comboNewList[0]?.products.cpu.model_name }}</span>
+                  </div>
+                  <div class="li">
+                    <span>GPU</span>
+                    <span>品牌：{{ comboNewList[0]?.products.gpu.firm }}</span>
+                    <span>型号：{{ comboNewList[0]?.products.gpu.model_name }}</span>
+                  </div>
+                  <div class="li">
+                    <span>硬盘</span>
+                    <span>品牌：{{ comboNewList[0]?.products.harddrive.firm }}</span>
+                    <span>型号：{{ comboNewList[0]?.products.harddrive.model_name }}</span>
+                  </div>
+                  <div class="li">
+                    <span>主板</span>
+                    <span>品牌：{{ comboNewList[0]?.products.motherboard.firm }}</span>
+                    <span>型号：{{ comboNewList[0]?.products.motherboard.model_name }}</span>
+                  </div>
+                  <div class="li">
+                    <span>电源</span>
+                    <span>品牌：{{ comboNewList[0]?.products.power.firm }}</span>
+                    <span>型号：{{ comboNewList[0]?.products.power.model_name }}</span>
+                  </div>
+                  <div class="li">
+                    <span>内存条</span>
+                    <span>品牌：{{ comboNewList[0]?.products.ram.firm }}</span>
+                    <span>型号：{{ comboNewList[0]?.products.ram.model_name }}</span>
+                  </div>
+                </div>
               </div>
             </div>
           </van-overlay>
@@ -50,60 +93,128 @@
             <span>套餐一</span>
           </div>
           <div class="price">
-            <span>4888</span>
+            <span>￥{{ comboNewList[0]?.total_price }}</span>
           </div>
           <div class="desc">
-            <span class="text">sadfsjjksdjksdfjkdfsjksdjkfsdklafnskdnflasndklf</span>
+            <span class="text">{{ comboNewList[0]?.name }}</span>
           </div>
           <div class="selector">
             选择器
           </div>
         </div>
 
-        <div class="item" @click="showDetail2 = true" >
+        <div class="item" @click="showDetail2 = true" v-if="comboNewList[1]">
           <!-- 遮蔽层显示详细数据 -->
           <van-overlay :show="showDetail2"  @click="showDetail2 = false">
             <div class="wrapper" @click.stop @click="showDetail2 = false">
               <div class="block" >
+                <div class="title">
+                  <span>套餐二  详细信息：</span>
+                </div>
                 <!-- 展示详细信息 -->
-                dsfas
+                <div class="block_content">
+                  <div class="li">
+                    <span>CPU</span>
+                    <span>品牌：{{ comboNewList[1]?.products.cpu.firm }}</span>
+                    <span>型号：{{ comboNewList[1]?.products.cpu.model_name }}</span>
+                  </div>
+                  <div class="li">
+                    <span>GPU</span>
+                    <span>品牌：{{ comboNewList[1]?.products.gpu.firm }}</span>
+                    <span>型号：{{ comboNewList[1]?.products.gpu.model_name }}</span>
+                  </div>
+                  <div class="li">
+                    <span>硬盘</span>
+                    <span>品牌：{{ comboNewList[1]?.products.harddrive.firm }}</span>
+                    <span>型号：{{ comboNewList[1]?.products.harddrive.model_name }}</span>
+                  </div>
+                  <div class="li">
+                    <span>主板</span>
+                    <span>品牌：{{ comboNewList[1]?.products.motherboard.firm }}</span>
+                    <span>型号：{{ comboNewList[1]?.products.motherboard.model_name }}</span>
+                  </div>
+                  <div class="li">
+                    <span>电源</span>
+                    <span>品牌：{{ comboNewList[1]?.products.power.firm }}</span>
+                    <span>型号：{{ comboNewList[1]?.products.power.model_name }}</span>
+                  </div>
+                  <div class="li">
+                    <span>内存条</span>
+                    <span>品牌：{{ comboNewList[1]?.products.ram.firm }}</span>
+                    <span>型号：{{ comboNewList[1]?.products.ram.model_name }}</span>
+                  </div>
+                </div>
               </div>
             </div>
           </van-overlay>
           
           <div class="name">
-            <span>套餐一</span>
+            <span>套餐二</span>
           </div>
           <div class="price">
-            <span>4888</span>
+            <span>￥{{ comboNewList[1]?.total_price }}</span>
           </div>
           <div class="desc">
-            <span class="text">sadfsjjksdjksdfjkdfsjksdjkfsdklafnskdnflasndklf</span>
+            <span class="text">{{ comboNewList[1]?.name }}</span>
           </div>
           <div class="selector">
             选择器
           </div>
         </div>
 
-        <div class="item" @click="showDetail3 = true" >
+        <div class="item" @click="showDetail3 = true" v-if="comboNewList[2]">
           <!-- 遮蔽层显示详细数据 -->
           <van-overlay :show="showDetail3"  @click="showDetail3 = false">
             <div class="wrapper" @click.stop @click="showDetail3 = false">
               <div class="block" >
+                <div class="title">
+                  <span>套餐一  详细信息：</span>
+                </div>
                 <!-- 展示详细信息 -->
-                dsfas
+                <div class="block_content">
+                  <div class="li">
+                    <span>CPU</span>
+                    <span>品牌：{{ comboNewList[2]?.products.cpu.firm }}</span>
+                    <span>型号：{{ comboNewList[2]?.products.cpu.model_name }}</span>
+                  </div>
+                  <div class="li">
+                    <span>GPU</span>
+                    <span>品牌：{{ comboNewList[2]?.products.gpu.firm }}</span>
+                    <span>型号：{{ comboNewList[2]?.products.gpu.model_name }}</span>
+                  </div>
+                  <div class="li">
+                    <span>硬盘</span>
+                    <span>品牌：{{ comboNewList[2]?.products.harddrive.firm }}</span>
+                    <span>型号：{{ comboNewList[2]?.products.harddrive.model_name }}</span>
+                  </div>
+                  <div class="li">
+                    <span>主板</span>
+                    <span>品牌：{{ comboNewList[2]?.products.motherboard.firm }}</span>
+                    <span>型号：{{ comboNewList[2]?.products.motherboard.model_name }}</span>
+                  </div>
+                  <div class="li">
+                    <span>电源</span>
+                    <span>品牌：{{ comboNewList[2]?.products.power.firm }}</span>
+                    <span>型号：{{ comboNewList[2]?.products.power.model_name }}</span>
+                  </div>
+                  <div class="li">
+                    <span>内存条</span>
+                    <span>品牌：{{ comboNewList[2]?.products.ram.firm }}</span>
+                    <span>型号：{{ comboNewList[2]?.products.ram.model_name }}</span>
+                  </div>
+                </div>
               </div>
             </div>
           </van-overlay>
           
           <div class="name">
-            <span>套餐一</span>
+            <span>套餐三</span>
           </div>
           <div class="price">
-            <span>4888</span>
+            <span>￥{{ comboNewList[2]?.total_price }}</span>
           </div>
           <div class="desc">
-            <span class="text">sadfsjjksdjksdfjkdfsjksdjkfsdklafnskdnflasndklf</span>
+            <span class="text">{{ comboNewList[2]?.name }}</span>
           </div>
           <div class="selector">
             选择器
@@ -243,7 +354,25 @@ const showDetail3 = ref(false)
     // 隐藏滚动条
     &::-webkit-scrollbar {display: none;}
 
+    .none-mes {
+      margin: 30px auto;
+      width: 80%;
+      .content {
+        flex-shrink: 0;
+        font-size: 24px;
+        background-color: #fff;
+        margin: 10px;
+        padding: 60px 30px;
+        border-radius: 15px;
+
+        -webkit-box-shadow: inset -1px 3px 8px 5px #ffffff, 2px 5px 16px 0px #444c55, -9px -8px 22px 6px rgba(0,0,0,0); 
+        box-shadow: inset -1px 3px 8px 5px #ffffff, 2px 5px 16px 0px #444c55, -9px -8px 22px 6px rgba(0,0,0,0);
+      
+      }
+    }
+
     .item {
+      flex-shrink: 0;
       font-size: 24px;
       background-color: #fff;
       width: 200px;
@@ -260,13 +389,51 @@ const showDetail3 = ref(false)
         align-items: center;
         justify-content: center;
         height: 100%;
+
+        .block {
+        width: 300px;
+        padding: 30px;
+        border-radius: 15px;
+        // height: 120px;
+        background-color: #fff;
+
+        .title {
+          font-size: 24px;
+          border-bottom: 1px solid #9e9d9d;
+          margin-bottom: 20px;
+          display: inline-block;
+        }
+
+        .block_content {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+          align-content: center;
+
+          .li {
+            flex-shrink: 0;
+            width: 48%;
+            display: flex;
+            flex-direction: column;
+            padding: 0 3px;
+            padding-bottom: 10px;
+
+            :nth-child(1) {
+              border-bottom: 1px solid #9e9d9d;
+              font-size: 24px;
+            }
+
+            span {
+              padding: 3px 0;
+              word-wrap: break-word;
+              font-size: 12px;
+            }
+          }
+        }
+       }
       }
 
-      .block {
-        width: 120px;
-        height: 120px;
-        background-color: #fff;
-      }
+      
       
       .name {
         text-align: center;
@@ -284,6 +451,7 @@ const showDetail3 = ref(false)
       .desc {
         overflow: hidden;
         font-size: 18px;
+        padding-top: 20px;
         padding-bottom: 30px;
         .text {
           width: 100%;
