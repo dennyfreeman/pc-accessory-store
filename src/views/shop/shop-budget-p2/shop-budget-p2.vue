@@ -16,10 +16,22 @@
     </div>
 
    
-    <div class="btn">
+    <div>
       <button @click="getCombo">获取套餐</button>
       <!-- <div>{{ comboNewList }}</div> -->
     </div>
+
+    <!-- toast插件 -->
+    <van-toast v-model:show="show" style="padding: 0">
+      <template #message>
+        <van-image :src="image" width="200" height="140" style="display: block" />
+      </template>
+    </van-toast>
+
+    <!-- 弹窗插件 -->
+    <van-dialog v-model:show="show" title="标题" show-cancel-button>
+      <img src="https://fastly.jsdelivr.net/npm/@vant/assets/apple-3.jpeg" />
+    </van-dialog>
 
     <!-- 文字提示 -->
     <div class="attention">
@@ -33,217 +45,245 @@
 
     <!-- 展示3个套餐 -->
     <div class="comboBox">
-      <div class="content">
-        <!-- 若无任何一个匹配则弹出无可匹配信息 -->
-        <div class="none-mes" v-if="!comboNewList[0]">
-          <div class="content">
-            <div class="text">
-              <span>没有相匹配的套餐，请重新提供数据！</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- 数据存在再显示正确信息 -->
-        <div class="item" @click="showDetail1 = true" v-if="comboNewList[0]">
-          <!-- 遮蔽层显示详细数据 -->
-          <van-overlay :show="showDetail1"  @click="showDetail1 = false">
-            <div class="wrapper" @click.stop @click="showDetail1 = false">
-              <div class="block" >
-                <div class="title">
-                  <span>套餐一  详细信息：</span>
-                </div>
-                <!-- 展示详细信息 -->
-                <div class="block_content">
-                  <div class="li">
-                    <span>CPU</span>
-                    <span>品牌：{{ comboNewList[0]?.products.cpu.firm }}</span>
-                    <span>型号：{{ comboNewList[0]?.products.cpu.model_name }}</span>
-                  </div>
-                  <div class="li">
-                    <span>GPU</span>
-                    <span>品牌：{{ comboNewList[0]?.products.gpu.firm }}</span>
-                    <span>型号：{{ comboNewList[0]?.products.gpu.model_name }}</span>
-                  </div>
-                  <div class="li">
-                    <span>硬盘</span>
-                    <span>品牌：{{ comboNewList[0]?.products.harddrive.firm }}</span>
-                    <span>型号：{{ comboNewList[0]?.products.harddrive.model_name }}</span>
-                  </div>
-                  <div class="li">
-                    <span>主板</span>
-                    <span>品牌：{{ comboNewList[0]?.products.motherboard.firm }}</span>
-                    <span>型号：{{ comboNewList[0]?.products.motherboard.model_name }}</span>
-                  </div>
-                  <div class="li">
-                    <span>电源</span>
-                    <span>品牌：{{ comboNewList[0]?.products.power.firm }}</span>
-                    <span>型号：{{ comboNewList[0]?.products.power.model_name }}</span>
-                  </div>
-                  <div class="li">
-                    <span>内存条</span>
-                    <span>品牌：{{ comboNewList[0]?.products.ram.firm }}</span>
-                    <span>型号：{{ comboNewList[0]?.products.ram.model_name }}</span>
-                  </div>
-                </div>
+      <van-radio-group v-model="comboChecked" direction="horizontal">
+        <div class="content">
+          <!-- 若无任何一个匹配则弹出无可匹配信息 -->
+          <div class="none-mes" v-if="!comboNewList[0]">
+            <div class="content">
+              <div class="text">
+                <span>没有相匹配的套餐，请重新提供数据！</span>
               </div>
             </div>
-          </van-overlay>
+          </div>
+          <!-- 获取用户选择的套餐 -->   
 
-          <div class="name">
-            <span>套餐一</span>
-          </div>
-          <div class="price">
-            <span>￥{{ comboNewList[0]?.total_price }}</span>
-          </div>
-          <div class="desc">
-            <span class="text">{{ comboNewList[0]?.name }}</span>
-          </div>
-          <div class="selector">
-            选择器
-          </div>
-        </div>
-
-        <div class="item" @click="showDetail2 = true" v-if="comboNewList[1]">
-          <!-- 遮蔽层显示详细数据 -->
-          <van-overlay :show="showDetail2"  @click="showDetail2 = false">
-            <div class="wrapper" @click.stop @click="showDetail2 = false">
-              <div class="block" >
-                <div class="title">
-                  <span>套餐二  详细信息：</span>
+            <div class="item" v-if="comboNewList[0]">
+              <div class="item-wrapper1" @click="showDetail1 = true">
+                <van-overlay :show="showDetail1"  @click="showDetail1 = false">
+                <div class="wrapper" @click.stop @click="showDetail1 = false">
+                  <div class="block" >
+                    <div class="title">
+                      <span>套餐一  详细信息：</span>
+                    </div>
+                    <!-- 展示详细信息 -->
+                    <div class="block_content">
+                      <div class="li">
+                        <span>CPU</span>
+                        <span>品牌：{{ comboNewList[0]?.products.cpu.firm }}</span>
+                        <span>型号：{{ comboNewList[0]?.products.cpu.model_name }}</span>
+                      </div>
+                      <div class="li">
+                        <span>GPU</span>
+                        <span>品牌：{{ comboNewList[0]?.products.gpu.firm }}</span>
+                        <span>型号：{{ comboNewList[0]?.products.gpu.model_name }}</span>
+                      </div>
+                      <div class="li">
+                        <span>硬盘</span>
+                        <span>品牌：{{ comboNewList[0]?.products.harddrive.firm }}</span>
+                        <span>型号：{{ comboNewList[0]?.products.harddrive.model_name }}</span>
+                      </div>
+                      <div class="li">
+                        <span>主板</span>
+                        <span>品牌：{{ comboNewList[0]?.products.motherboard.firm }}</span>
+                        <span>型号：{{ comboNewList[0]?.products.motherboard.model_name }}</span>
+                      </div>
+                      <div class="li">
+                        <span>电源</span>
+                        <span>品牌：{{ comboNewList[0]?.products.power.firm }}</span>
+                        <span>型号：{{ comboNewList[0]?.products.power.model_name }}</span>
+                      </div>
+                      <div class="li">
+                        <span>内存条</span>
+                        <span>品牌：{{ comboNewList[0]?.products.ram.firm }}</span>
+                        <span>型号：{{ comboNewList[0]?.products.ram.model_name }}</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <!-- 展示详细信息 -->
-                <div class="block_content">
-                  <div class="li">
-                    <span>CPU</span>
-                    <span>品牌：{{ comboNewList[1]?.products.cpu.firm }}</span>
-                    <span>型号：{{ comboNewList[1]?.products.cpu.model_name }}</span>
-                  </div>
-                  <div class="li">
-                    <span>GPU</span>
-                    <span>品牌：{{ comboNewList[1]?.products.gpu.firm }}</span>
-                    <span>型号：{{ comboNewList[1]?.products.gpu.model_name }}</span>
-                  </div>
-                  <div class="li">
-                    <span>硬盘</span>
-                    <span>品牌：{{ comboNewList[1]?.products.harddrive.firm }}</span>
-                    <span>型号：{{ comboNewList[1]?.products.harddrive.model_name }}</span>
-                  </div>
-                  <div class="li">
-                    <span>主板</span>
-                    <span>品牌：{{ comboNewList[1]?.products.motherboard.firm }}</span>
-                    <span>型号：{{ comboNewList[1]?.products.motherboard.model_name }}</span>
-                  </div>
-                  <div class="li">
-                    <span>电源</span>
-                    <span>品牌：{{ comboNewList[1]?.products.power.firm }}</span>
-                    <span>型号：{{ comboNewList[1]?.products.power.model_name }}</span>
-                  </div>
-                  <div class="li">
-                    <span>内存条</span>
-                    <span>品牌：{{ comboNewList[1]?.products.ram.firm }}</span>
-                    <span>型号：{{ comboNewList[1]?.products.ram.model_name }}</span>
-                  </div>
+                </van-overlay>
+
+                <div class="name">
+                  <span>套餐一</span>
+                </div>
+                <div class="price">
+                  <span>￥{{ comboNewList[0]?.total_price }}</span>
+                </div>
+                <div class="desc">
+                  <span class="text">{{ comboNewList[0]?.name }}</span>
+                </div>          
+              </div>
+              <div class="item-wrapper2">
+                <div class="selector">
+                  <van-radio name="0">点击选择</van-radio>
                 </div>
               </div>
+              
             </div>
-          </van-overlay>
-          
-          <div class="name">
-            <span>套餐二</span>
-          </div>
-          <div class="price">
-            <span>￥{{ comboNewList[1]?.total_price }}</span>
-          </div>
-          <div class="desc">
-            <span class="text">{{ comboNewList[1]?.name }}</span>
-          </div>
-          <div class="selector">
-            选择器
-          </div>
-        </div>
 
-        <div class="item" @click="showDetail3 = true" v-if="comboNewList[2]">
-          <!-- 遮蔽层显示详细数据 -->
-          <van-overlay :show="showDetail3"  @click="showDetail3 = false">
-            <div class="wrapper" @click.stop @click="showDetail3 = false">
-              <div class="block" >
-                <div class="title">
-                  <span>套餐一  详细信息：</span>
+            <div class="item" v-if="comboNewList[1]">
+              <div class="item-wrapper1" @click="showDetail2 = true">
+                <van-overlay :show="showDetail2"  @click="showDetail2 = false">
+                <div class="wrapper" @click.stop @click="showDetail2 = false">
+                  <div class="block" >
+                    <div class="title">
+                      <span>套餐二  详细信息：</span>
+                    </div>
+                    <!-- 展示详细信息 -->
+                    <div class="block_content">
+                      <div class="li">
+                        <span>CPU</span>
+                        <span>品牌：{{ comboNewList[1]?.products.cpu.firm }}</span>
+                        <span>型号：{{ comboNewList[1]?.products.cpu.model_name }}</span>
+                      </div>
+                      <div class="li">
+                        <span>GPU</span>
+                        <span>品牌：{{ comboNewList[1]?.products.gpu.firm }}</span>
+                        <span>型号：{{ comboNewList[1]?.products.gpu.model_name }}</span>
+                      </div>
+                      <div class="li">
+                        <span>硬盘</span>
+                        <span>品牌：{{ comboNewList[1]?.products.harddrive.firm }}</span>
+                        <span>型号：{{ comboNewList[1]?.products.harddrive.model_name }}</span>
+                      </div>
+                      <div class="li">
+                        <span>主板</span>
+                        <span>品牌：{{ comboNewList[1]?.products.motherboard.firm }}</span>
+                        <span>型号：{{ comboNewList[1]?.products.motherboard.model_name }}</span>
+                      </div>
+                      <div class="li">
+                        <span>电源</span>
+                        <span>品牌：{{ comboNewList[1]?.products.power.firm }}</span>
+                        <span>型号：{{ comboNewList[1]?.products.power.model_name }}</span>
+                      </div>
+                      <div class="li">
+                        <span>内存条</span>
+                        <span>品牌：{{ comboNewList[1]?.products.ram.firm }}</span>
+                        <span>型号：{{ comboNewList[1]?.products.ram.model_name }}</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <!-- 展示详细信息 -->
-                <div class="block_content">
-                  <div class="li">
-                    <span>CPU</span>
-                    <span>品牌：{{ comboNewList[2]?.products.cpu.firm }}</span>
-                    <span>型号：{{ comboNewList[2]?.products.cpu.model_name }}</span>
-                  </div>
-                  <div class="li">
-                    <span>GPU</span>
-                    <span>品牌：{{ comboNewList[2]?.products.gpu.firm }}</span>
-                    <span>型号：{{ comboNewList[2]?.products.gpu.model_name }}</span>
-                  </div>
-                  <div class="li">
-                    <span>硬盘</span>
-                    <span>品牌：{{ comboNewList[2]?.products.harddrive.firm }}</span>
-                    <span>型号：{{ comboNewList[2]?.products.harddrive.model_name }}</span>
-                  </div>
-                  <div class="li">
-                    <span>主板</span>
-                    <span>品牌：{{ comboNewList[2]?.products.motherboard.firm }}</span>
-                    <span>型号：{{ comboNewList[2]?.products.motherboard.model_name }}</span>
-                  </div>
-                  <div class="li">
-                    <span>电源</span>
-                    <span>品牌：{{ comboNewList[2]?.products.power.firm }}</span>
-                    <span>型号：{{ comboNewList[2]?.products.power.model_name }}</span>
-                  </div>
-                  <div class="li">
-                    <span>内存条</span>
-                    <span>品牌：{{ comboNewList[2]?.products.ram.firm }}</span>
-                    <span>型号：{{ comboNewList[2]?.products.ram.model_name }}</span>
-                  </div>
+                </van-overlay>
+
+                <div class="name">
+                  <span>套餐二</span>
+                </div>
+                <div class="price">
+                  <span>￥{{ comboNewList[1]?.total_price }}</span>
+                </div>
+                <div class="desc">
+                  <span class="text">{{ comboNewList[1]?.name }}</span>
+                </div>          
+              </div>
+              <div class="item-wrapper2">
+                <div class="selector">
+                  <van-radio name="1">点击选择</van-radio>
                 </div>
               </div>
+              
             </div>
-          </van-overlay>
-          
-          <div class="name">
-            <span>套餐三</span>
-          </div>
-          <div class="price">
-            <span>￥{{ comboNewList[2]?.total_price }}</span>
-          </div>
-          <div class="desc">
-            <span class="text">{{ comboNewList[2]?.name }}</span>
-          </div>
-          <div class="selector">
-            选择器
-          </div>
-        </div>
 
-      </div>
+            <div class="item" v-if="comboNewList[2]">
+              <div class="item-wrapper1" @click="showDetail3 = true">
+                <van-overlay :show="showDetail3"  @click="showDetail3 = false">
+                <div class="wrapper" @click.stop @click="showDetail3 = false">
+                  <div class="block" >
+                    <div class="title">
+                      <span>套餐二  详细信息：</span>
+                    </div>
+                    <!-- 展示详细信息 -->
+                    <div class="block_content">
+                      <div class="li">
+                        <span>CPU</span>
+                        <span>品牌：{{ comboNewList[2]?.products.cpu.firm }}</span>
+                        <span>型号：{{ comboNewList[2]?.products.cpu.model_name }}</span>
+                      </div>
+                      <div class="li">
+                        <span>GPU</span>
+                        <span>品牌：{{ comboNewList[2]?.products.gpu.firm }}</span>
+                        <span>型号：{{ comboNewList[2]?.products.gpu.model_name }}</span>
+                      </div>
+                      <div class="li">
+                        <span>硬盘</span>
+                        <span>品牌：{{ comboNewList[2]?.products.harddrive.firm }}</span>
+                        <span>型号：{{ comboNewList[2]?.products.harddrive.model_name }}</span>
+                      </div>
+                      <div class="li">
+                        <span>主板</span>
+                        <span>品牌：{{ comboNewList[2]?.products.motherboard.firm }}</span>
+                        <span>型号：{{ comboNewList[2]?.products.motherboard.model_name }}</span>
+                      </div>
+                      <div class="li">
+                        <span>电源</span>
+                        <span>品牌：{{ comboNewList[2]?.products.power.firm }}</span>
+                        <span>型号：{{ comboNewList[2]?.products.power.model_name }}</span>
+                      </div>
+                      <div class="li">
+                        <span>内存条</span>
+                        <span>品牌：{{ comboNewList[2]?.products.ram.firm }}</span>
+                        <span>型号：{{ comboNewList[2]?.products.ram.model_name }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </van-overlay>
+
+                <div class="name">
+                  <span>套餐三</span>
+                </div>
+                <div class="price">
+                  <span>￥{{ comboNewList[2]?.total_price }}</span>
+                </div>
+                <div class="desc">
+                  <span class="text">{{ comboNewList[2]?.name }}</span>
+                </div>          
+              </div>
+              <div class="item-wrapper2">
+                <div class="selector">
+                  <van-radio name="2">点击选择</van-radio>
+                </div>
+              </div>
+            </div> 
+
+          <!-- 数据存在再显示正确信息 -->   
+        </div>
+      </van-radio-group>
     </div>
 
-
-
-    <!-- 按钮 -->
+     <!-- 下一步按钮 -->
+     <div class="btn-nextpage">
+      <div class="btn">
+        <van-button 
+          type="primary" 
+          size="large"
+          color="linear-gradient(270deg, #84fab0 0%, #8fd3f4 100%)"
+          @click="nextPageClick"
+          >下一步</van-button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
 // 导入插件
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 
 // 导入预算store
 import userBudgetStore from "@/store/models/user-budget/user-budget"
 
 // 导入数据表
 import requestingDB from "@/database/index"
+import { toNumber } from "@vue/shared";
+import { showDialog, showFailToast } from "vant";
+
+const router = useRouter()
 
 // 获取当前预算金额
 const budgetStore = userBudgetStore()
 const budget = budgetStore.budget
 const userId = budgetStore.userId
+const comboMes = budgetStore.comboMes
 console.log(budget)
 
 // 最终获取套餐的新数组（只限前三位），必须动态
@@ -295,6 +335,52 @@ const showDetail2 = ref(false)
 const showDetail3 = ref(false)
 // 判断能否有3个套餐，否则前端不要展示
 
+// 获取前端用户选择的套餐
+const comboChecked = ref()
+console.log(comboChecked.value)
+
+// 当用户选择好套餐后，点击按钮前往下一页，并把信息提交到store中存储
+const nextPageClick = () => {
+  // 判断当前用户选择的套餐
+  console.log(comboChecked.value)
+
+  var comboCheckNum = toNumber(comboChecked.value)
+  var comboMesList = comboNewList.value
+
+  // 将用户的套餐信息存储到store中
+  if (comboCheckNum === 0) {
+    console.log("选择了套餐1")
+    budgetStore.comboMes = comboMesList[0]
+    console.log(budgetStore)
+    router.push("/shop-budget-p3")
+  } else if (comboCheckNum === 1) {
+    console.log("选择了套餐2")
+    budgetStore.comboMes = comboMesList[1]
+    console.log(budgetStore.comboMes)
+    router.push("/shop-budget-p3")
+  } else if (comboCheckNum === 2) {
+    console.log("选择了套餐3")
+    budgetStore.comboMes = comboMesList[2]
+    console.log(budgetStore.comboMes)
+    router.push("/shop-budget-p3")
+  } else {
+    
+    if (!comboMesList[0]) {
+      // 若无任何套餐可供选择，则让用户跳转回去上一个页面
+      showDialog({
+        message: "您提供的预算金额太低，请重新选择。"
+      }).then(() => {
+        // 跳转到上一个页面
+        router.back()
+      })
+
+    } else {
+      // 若未选中任何套餐，则弹出警告
+      showFailToast('请选择一个套餐');
+    }
+  }
+}
+
 
 </script>
 
@@ -329,7 +415,7 @@ const showDetail3 = ref(false)
 }
 
 .attention {
-  padding-top: 69px;
+  padding-top: 10px;
   padding-left: 10px;
   font-weight: 500;
   color: #3e3e3e;
@@ -345,7 +431,7 @@ const showDetail3 = ref(false)
 
 
 .comboBox {
-  margin: 10px auto;
+  margin: 30px auto;
 
   .content {
     display: flex;
@@ -431,9 +517,7 @@ const showDetail3 = ref(false)
           }
         }
        }
-      }
-
-      
+      }  
       
       .name {
         text-align: center;
@@ -463,7 +547,28 @@ const showDetail3 = ref(false)
           text-overflow: ellipsis;
         }
       }
+
+      .item-wrapper2 {
+        .selector {
+          font-size: 20px;
+          display: flex;
+          justify-content: center;
+        }
+      }
     }
   }
 }
+
+.btn {
+    font-size: 48px;
+
+    --van-button-large-height: 100px;
+    --van-button-default-font-size: 24px;
+
+    margin: 0 auto;
+    margin-top: 30px;
+    width: 80%;
+    -webkit-box-shadow: 7px 11px 10px 1px rgba(0,0,0,0.225); 
+    box-shadow: 7px 11px 10px 1px rgba(0,0,0,0.225);
+  }
 </style>

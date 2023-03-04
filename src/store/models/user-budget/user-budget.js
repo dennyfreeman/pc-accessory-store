@@ -4,7 +4,8 @@ const userBudgetStore = defineStore("App", {
   state:() => ({
     userId: "",
     userName: "",
-    budget: 0
+    budget: 0,
+    comboMes: {}
   }),
   actions: {
 
