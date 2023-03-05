@@ -24,6 +24,8 @@ var db = app.database()
 const collectionPcStoreUserList = "user-pcstore"
 // 套餐表
 const collectionPcStoreComboList = "combo-pcstore"
+// CPU表
+const collectionPcStoreCPUList = "cpu-pcstore"
 
 // 腾讯数据库查询指令
 const _ = db.command
@@ -52,6 +54,22 @@ class requestingDB {
   getComboListDB(price) {
     return new Promise((resolve, reject) => {
       db.collection(collectionPcStoreComboList)
+      .get()
+      .then(res => {
+        resolve(res.data)
+      }).catch(err => {
+        reject(err)
+      })
+    })
+  }
+
+  // 查询cpu表，对标cpu接口
+  getCPUListDB(plugsid = "") {
+    return new Promise((resolve, reject) => {
+      db.collection(collectionPcStoreCPUList)
+      .where({
+        "cpu_plugs_id": plugsid
+      })
       .get()
       .then(res => {
         resolve(res.data)
