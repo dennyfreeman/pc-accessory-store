@@ -16,6 +16,10 @@
       </div>
     </div>
 
+    {{ cpuShowList }}
+    <div v-for="item in cpuShowList">
+      {{ item.firm }}
+    </div>
     <!-- 显示套餐信息 -->
     <div class="combo">
       <!-- 文字提示 -->
@@ -39,26 +43,41 @@
     <div class="custom">
       <div class="content">
         <van-collapse v-model="productsSelector" accordion>
-          <van-collapse-item title="CPU" name="1">
+          <van-collapse-item title="CPU" name="1" @click="cpuGetList">
             <!-- cpu选择 -->
-            <van-radio-group v-model="cpuSelector">
+            <van-radio-group v-model="cpuSelector"  @click.stop>
               <van-cell-group inset>
-                <van-cell title="单选框 1" clickable @click="cpuSelector = '1'">
-                  <template #right-icon>
-                    <van-radio name="1" />
-                  </template>
-                </van-cell>
-                <van-cell title="单选框 2" clickable @click="cpuSelector = '2'">
-                  <template #right-icon>
-                    <van-radio name="2" />
-                  </template>
-                </van-cell>
+                <div v-for="(item, index) in cpuShowList" :key="index">
+                  <van-cell clickable @click="cpuGetProductId(index, item.product_id, item)">
+                    <template #title>
+                      <span>{{ item.firm }}&nbsp;-&nbsp;</span>
+                      <span>{{ item.model_name }}</span>
+                    </template>
+                    <template #right-icon>
+                      <van-radio :name = index />
+                    </template>
+                  </van-cell> 
+                </div>       
               </van-cell-group>
             </van-radio-group>
-            
           </van-collapse-item>
-          <van-collapse-item title="显卡" name="2">
-            技术无非就是那些开发它的人的共同灵魂。
+          <van-collapse-item title="显卡" name="2" @click="gpuGetList">
+            <!-- cpu选择 -->
+            <van-radio-group v-model="cpuSelector"  @click.stop>
+              <van-cell-group inset>
+                <div v-for="(item, index) in cpuShowList" :key="index">
+                  <van-cell clickable @click="cpuGetProductId(index, item.product_id, item)">
+                    <template #title>
+                      <span>{{ item.firm }}&nbsp;-&nbsp;</span>
+                      <span>{{ item.model_name }}</span>
+                    </template>
+                    <template #right-icon>
+                      <van-radio :name = index />
+                    </template>
+                  </van-cell> 
+                </div>       
+              </van-cell-group>
+            </van-radio-group>
           </van-collapse-item>
           <van-collapse-item title="硬盘" name="3">
             在代码阅读过程中人们说脏话的频率是衡量代码质量的唯一标准。
@@ -105,25 +124,80 @@ const productsStore = comboMes.products
 // 动态监控每个产品的id
 const cpuSelector = ref()
 
+// fn点击事件：修改套餐的cpu信息
+const cpuGetProductId = (index, cpu_product_id, product_mes) => {
+  var productMes = product_mes
+  cpuSelector.value = index
+  // 从前端判断用户选择了哪个cpu
+  console.log(index, cpu_product_id)
+  // 并把该信息修改store中的套餐信息
+  productsStore.cpu = productMes
+  console.log("修改store中的cpu", productsStore.cpu)
+}
+
 // 通过接口来获取不同的产品
 // 通过store中cpu的接口，展示所有的cpu产品
 // 获取当前cpu的接口
-const cpuPlugsId = productsStore.cpu.plugs_id
-console.log(cpuPlugsId)
+const cpuPlugsId = productsStore.motherboard.cpu_plugs_id
+// 获取当前gpu接口
+const gpuPlugsId = productsStore.gpu.plugs_id
+
 // 通过接口id获取数据库中所有的cpu信息
+const cpuShowList = ref([])
+
 
 // fn: 从数据库中获取关于cpu的信息
 const cpuGetList = async () => {
   // cpu接口
   var plugs = cpuPlugsId
+  var cpuList = []
 
   // 根据接口获取cpu列表
   var resultDB = await requestingDB.getCPUListDB(plugs)
   console.log(resultDB)
 
-  // /////// 写到这里
+  // 将获取的cpu列表存储到现在的新的数组中
+  for (var i = 0; i < resultDB.length; i++) {
+    var cpuObj = {}
+    cpuObj.product_id = resultDB[i].product_id
+    cpuObj.firm = resultDB[i].firm
+    cpuObj.model_name = resultDB[i].model_name
+    cpuObj.price = resultDB[i].price
+    cpuObj.plugs_id = resultDB[i].cpu_plugs_id
+    
+    cpuList.push(cpuObj)
+  }
+  console.log(cpuList)
 
+  // 动态展示到前端中
+  cpuShowList.value = cpuList
 }
+
+// fn: 从数据库中获取关于gpu的信息
+const gpuGetList = async () => {
+  // gpu接口
+  var plugs = gpuPlugsId
+  var gpuList = []
+
+  // 根据接口获取gpu列表
+  var resultDB = await requestingDB.getGPUListDB(plugs)
+  console.log(resultDB)
+
+  // 将获取的gpu列表存储到现在新的数据中
+  for (var i = 0; i < resultDB.length; i++) {
+    var gpuObj = {}
+    // cpuObj.product_id = resultDB[i].product_id
+    // cpuObj.firm = resultDB[i].firm
+    // cpuObj.model_name = resultDB[i].model_name
+    // cpuObj.price = resultDB[i].price
+    // cpuObj.plugs_id = resultDB[i].cpu_plugs_id
+
+    gpuObj.product_id = resultDB[i].product_id
+    
+    // cpuList.push(cpuObj)
+  } 
+} 
+
 
 // 提交产品信息到订单数据表
 

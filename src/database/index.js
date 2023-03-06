@@ -26,6 +26,8 @@ const collectionPcStoreUserList = "user-pcstore"
 const collectionPcStoreComboList = "combo-pcstore"
 // CPU表
 const collectionPcStoreCPUList = "cpu-pcstore"
+// GPU表
+const collectionPcStoreGPUList = "gpu-pcstore"
 
 // 腾讯数据库查询指令
 const _ = db.command
@@ -64,11 +66,27 @@ class requestingDB {
   }
 
   // 查询cpu表，对标cpu接口
-  getCPUListDB(plugsid = "") {
+  getCPUListDB(plugs = "") {
     return new Promise((resolve, reject) => {
       db.collection(collectionPcStoreCPUList)
       .where({
-        "cpu_plugs_id": plugsid
+        "cpu_plugs_id": plugs
+      })
+      .get()
+      .then(res => {
+        resolve(res.data)
+      }).catch(err => {
+        reject(err)
+      })
+    })
+  }
+
+  // 查询gpu表，对标gpu接口
+  getGPUListDB(plugs = "") {
+    return new Promise((resolve, reject) => {
+      db.collection(collectionPcStoreGPUList)
+      .where({
+        "plugs_id": plugs
       })
       .get()
       .then(res => {
