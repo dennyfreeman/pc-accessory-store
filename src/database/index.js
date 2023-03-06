@@ -28,6 +28,12 @@ const collectionPcStoreComboList = "combo-pcstore"
 const collectionPcStoreCPUList = "cpu-pcstore"
 // GPU表
 const collectionPcStoreGPUList = "gpu-pcstore"
+// 硬盘表
+const collectionPcStoreHardDriveList = "harddrive-pcstore"
+// 主板表
+const collectionPcStoreMotherBoardList = "motherboard-pcstore"
+// 电源表
+const collectionPcStorePowerList = "power-pcstore"
 
 // 腾讯数据库查询指令
 const _ = db.command
@@ -97,6 +103,50 @@ class requestingDB {
     })
   }
 
+  // 查询硬盘表
+  getHardDriveListDB() {
+    return new Promise((resolve, reject) => {
+      db.collection(collectionPcStoreHardDriveList)
+      .get()
+      .then(res => {
+        resolve(res.data)
+      }).catch(err => {
+        reject(err)
+      })
+    })
+  }
+
+  // 查询主板，对标cpu接口
+  getMotherBoardListDB(plugs = "") {
+    return new Promise((resolve, reject) => {
+      db.collection(collectionPcStoreMotherBoardList)
+      .where({
+        "cpu_plugs_id": plugs
+      })
+      .get()
+      .then(res => {
+        resolve(res.data)
+      }).catch(err => {
+        reject(err)
+      })
+    })
+  }
+
+  //查询电源，对标显卡推荐功率
+  getPowerListDB(power = 0) {
+    return new Promise((resolve, reject) => {
+      db.collection(collectionPcStorePowerList)
+      .where({
+        max_power: _.gte(power)
+      })
+      .get()
+      .then(res => {
+        resolve(res.data)
+      }).catch(err => {
+        reject(err)
+      })
+    })
+  }
 
 }
 
