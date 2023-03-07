@@ -15,7 +15,6 @@
       </div>
     </div>
 
-   
     <div>
       <button @click="getCombo">获取套餐</button>
       <!-- <div>{{ comboNewList }}</div> -->

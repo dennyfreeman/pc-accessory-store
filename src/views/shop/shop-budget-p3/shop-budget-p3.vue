@@ -180,6 +180,7 @@
 // 导入插件
 import { ref, computed } from 'vue';
 import { storeToRefs } from 'pinia'
+import { useRouter } from 'vue-router';
 
 // 导入store
 import userBudgetStore from "@/store/models/user-budget/user-budget"
@@ -187,8 +188,13 @@ import userBudgetStore from "@/store/models/user-budget/user-budget"
 // 导入数据表
 import requestingDB from "@/database/index"
 
+// 导入dayjs时间格式插件
+import { formatDateTime, formatDateTimeID } from "@/utils/format_time"
+
 // 产品标签选择器
 const productsSelector = ref('')
+
+const router = useRouter()
 
 // 获取store中当前套餐的信息
 const budgetStore = userBudgetStore()
@@ -482,7 +488,53 @@ const ramGetList = async () => {
 
 // 提交产品信息到订单数据表
 const nextPageClick = () => {
+  // 获取当前的套餐信息，并提交到订单中
+  var comboListMes = budgetStore
+  var orderListObj = {}
+  orderListObj.user_id = comboListMes.userId
+  orderListObj.user_name = comboListMes.userName
+  orderListObj.total_price = comboListMes.budget
+  orderListObj.products_list = productsStore
+
+  // 生成订单状态信息
+  orderListObj.order_status = 0
+
+  // 生成订单待填充信息
+  orderListObj.pay_time = ""
+  // 联系人信息
+  orderListObj.detail = {
+    "contact": "",
+    "address": "",
+    "number": ""
+  }
+  // 运输信息
+  orderListObj.progress = {
+    "transport_mes": "",
+    "transport_status": 0
+  }
+  orderListObj.finish_time = ""
+
+  // 获取当前系统时间
+  var nowTime = new Date()
+  // 用dayjs处理格式
+  var formatTime = formatDateTime(nowTime)
+  console.log(formatTime)
+  orderListObj.create_time = formatTime
+
+  // 生成一个专属的订单id
+  // 用户id_日期_价格
+  var formatTimeID = formatDateTimeID(nowTime)
+  var order_id = comboListMes.userId + '_' + formatTimeID + '_' + comboListMes.budget
+  orderListObj.order_id = order_id
   
+  // 将所有数据提交到订单数据表中
+  console.log(orderListObj)
+
+  var addOrderDb = requestingDB.addNewOrder(orderListObj)
+  console.log(addOrderDb)
+
+  // 跳转到下一页
+  router.push("/shop-budget-p4")
 }
 
 </script>
@@ -568,12 +620,12 @@ const nextPageClick = () => {
 
 .btn {
     font-size: 48px;
+    margin: 0 auto;
+    margin-bottom: 30px;
 
     --van-button-large-height: 75px;
     --van-button-default-font-size: 24px;
 
-    margin: 0 auto;
-    margin-top: 30px;
     width: 80%;
     -webkit-box-shadow: 7px 11px 10px 1px rgba(0,0,0,0.225); 
     box-shadow: 7px 11px 10px 1px rgba(0,0,0,0.225);

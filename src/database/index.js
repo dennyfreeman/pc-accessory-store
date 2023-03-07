@@ -36,6 +36,9 @@ const collectionPcStoreMotherBoardList = "motherboard-pcstore"
 const collectionPcStorePowerList = "power-pcstore"
 // 内存条表
 const collectionPcStoreRamList = "ram-pcstore"
+// 订单表
+const collectionPcStoreOrderList = "order-pcstore"
+
 
 // 腾讯数据库查询指令
 const _ = db.command
@@ -159,6 +162,20 @@ class requestingDB {
       })
       .get()
       .then(res => {
+        resolve(res.data)
+      }).catch(err => {
+        reject(err)
+      })
+    })
+  }
+
+  // 添加订单
+  addNewOrder(order) {
+    return new Promise((resolve, reject) => {
+      db.collection(collectionPcStoreOrderList)
+      .add(order)
+      .then(res => {
+        console.log("提交成功", res)
         resolve(res.data)
       }).catch(err => {
         reject(err)

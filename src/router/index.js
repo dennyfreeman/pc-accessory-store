@@ -33,6 +33,13 @@ const router = createRouter({
       }
     },
     {
+      path: "/shop-budget-p4",
+      component: () => import("@/views/shop/shop-budget-p4/shop-budget-p4.vue"),
+      meta: {
+        hideTabBar: true
+      }
+    },
+    {
       path: "/order",
       component: () => import("@/views/order/order.vue")
     },
