@@ -34,6 +34,8 @@ const collectionPcStoreHardDriveList = "harddrive-pcstore"
 const collectionPcStoreMotherBoardList = "motherboard-pcstore"
 // 电源表
 const collectionPcStorePowerList = "power-pcstore"
+// 内存条表
+const collectionPcStoreRamList = "ram-pcstore"
 
 // 腾讯数据库查询指令
 const _ = db.command
@@ -138,6 +140,22 @@ class requestingDB {
       db.collection(collectionPcStorePowerList)
       .where({
         max_power: _.gte(power)
+      })
+      .get()
+      .then(res => {
+        resolve(res.data)
+      }).catch(err => {
+        reject(err)
+      })
+    })
+  }
+
+  // 查询内存条表
+  getRamListDB() {
+    return new Promise((resolve, reject) => {
+      db.collection(collectionPcStoreRamList)
+      .where({
+        "DDR": "DDR4"
       })
       .get()
       .then(res => {

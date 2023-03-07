@@ -1,5 +1,5 @@
 <template>
-  <div class="shopBudgetP3">
+  <div class="shopBudgetP3 back">
     <!-- 此页面等同于自定义页面 -->
     
     <!-- 头部 -->
@@ -30,7 +30,8 @@
       <!-- 显示套餐现有价格 -->
       <div class="combo-price">
         <span class="text">统计：</span>
-        <span class="price">￥2343</span>
+        <!-- 实时监控store中套餐统计 -->
+        <span class="price">￥{{ showComboPrice }}</span>
       </div>
       </div>
     </div>
@@ -85,7 +86,7 @@
                   <van-cell clickable @click="hardDriveProductId(index, item.product_id, item)">
                     <template #title>
                       <span>{{ item.firm }}&nbsp;-&nbsp;</span>
-                      <span>{{ item.model_name }}&nbsp;-&nbsp;</span>
+                      <span class="block-text">{{ item.model_name }}&nbsp;-&nbsp;</span>
                       <span>{{ item.memory_size }}&nbsp;-&nbsp;</span>
                       <span>￥{{ item.price }}</span>
                     </template>
@@ -135,19 +136,50 @@
               </van-cell-group>
             </van-radio-group>
           </van-collapse-item>
-          <van-collapse-item title="内存条" name="6">
-            在代码阅读过程中人们说脏话的频率是衡量代码质量的唯一标准。
+          <van-collapse-item title="内存条" name="6" @click="ramGetList">
+            <!-- 内存条选择 -->
+            <van-radio-group v-model="ramSelector"  @click.stop>
+              <van-cell-group inset>
+                <div v-for="(item, index) in ramShowList" :key="index">
+                  <van-cell clickable @click="ramProductId(index, item.product_id, item)">
+                    <template #title>
+                      <span>{{ item.firm }}&nbsp;-&nbsp;</span>
+                      <span class="block-text">{{ item.model_name }}&nbsp;-&nbsp;</span>
+                      <span>{{ item.memory_size }}&nbsp;-&nbsp;</span>
+                      <span>￥{{ item.price }}</span>
+                    </template>
+                    <template #right-icon>
+                      <van-radio :name = index />
+                    </template>
+                  </van-cell> 
+                </div>       
+              </van-cell-group>
+            </van-radio-group>
           </van-collapse-item>
         </van-collapse>
       </div>
     </div>
 
+    <!-- 下一步按钮 -->
+    <div class="btn-nextpage">
+      <div class="btn">
+        <van-button 
+          type="primary" 
+          size="large"
+          color="linear-gradient(270deg, #84fab0 0%, #8fd3f4 100%)"
+          @click="nextPageClick"
+          >下一步</van-button>
+      </div>
+    </div>
+
   </div>
+  
 </template>
 
 <script setup>
 // 导入插件
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import { storeToRefs } from 'pinia'
 
 // 导入store
 import userBudgetStore from "@/store/models/user-budget/user-budget"
@@ -160,19 +192,19 @@ const productsSelector = ref('')
 
 // 获取store中当前套餐的信息
 const budgetStore = userBudgetStore()
-const budget = budgetStore.budget
+const storeBudget = budgetStore.budget
 const userId = budgetStore.userId
 const comboMes = budgetStore.comboMes
 const productsStore = comboMes.products
 
 // 将所有的信息展示到前端，并且所有的产品信息都是动态获取
-
 // 动态监控每个产品的id
 const cpuSelector = ref()
 const gpuSelector = ref()
 const hardDriveSelector = ref()
 const motherBoardSelector = ref()
 const powerSelector = ref()
+const ramSelector = ref()
 
 // fn点击事件：修改套餐的cpu信息
 const cpuGetProductId = (index, cpu_product_id, product_mes) => {
@@ -220,7 +252,7 @@ const motherBoardProductId = (index, motherboard_product_id, product_mes) => {
 }
 
 // fn点击事件: 修改套餐的电源信息
-const powerProductId = (inxdex, power_product_id, product_mes) => {
+const powerProductId = (index, power_product_id, product_mes) => {
   var productMes = product_mes
   powerSelector.value = index
   // 从前端判断用户选择哪个电源
@@ -228,6 +260,17 @@ const powerProductId = (inxdex, power_product_id, product_mes) => {
   // 并把新修改的store中的套餐信息
   productsStore.power = productMes
   console.log("修改store中的电源", productsStore.power)
+}
+
+// fn点击事件: 修改套餐的内存条信息
+const ramProductId = (index, power_product_id, product_mes) => {
+  var productMes = product_mes
+  ramSelector.value = index
+  // 从前端判断用户选择哪个内存条
+  console.log(index, power_product_id)
+  // 并把新修改的store中的套餐信息
+  productsStore.ram = productMes
+  console.log("修改store中的内存条", productsStore.ram)
 }
 
 
@@ -240,6 +283,7 @@ const cpuMdPlugsId = productsStore.cpu.plugs_id
 // 获取当前gpu接口
 const gpuPlugsId = productsStore.gpu.plugs_id
 
+
 // 通过接口id获取数据库中所有信息，并且把信息展示到前端
 const cpuShowList = ref([])
 // gpu信息
@@ -250,6 +294,29 @@ const hardDriveShowList= ref([])
 const motherBoardShowList= ref([])
 // 电源信息
 const powerShowList = ref([])
+// 内存条信息
+const ramShowList = ref([])
+
+// 实时监控store中的整体价格  
+const showComboPrice = computed(() => {
+  var cpuPrice = productsStore.cpu.price
+  var gpuPrice = productsStore.gpu.price
+  var hardDrivePrice = productsStore.harddrive.price
+  var motherBoardPrice = productsStore.motherboard.price
+  var powerPrice = productsStore.power.price
+  var ramPrice = productsStore.ram.price
+
+  var totalPrice = cpuPrice + gpuPrice + hardDrivePrice + motherBoardPrice + powerPrice + ramPrice
+
+  console.log(totalPrice)
+
+  // 将统计数据更新到store的budget中
+  budgetStore.budget = totalPrice
+
+  // 把总计返回给前端
+  return totalPrice
+})
+
 
 // 获取数据库数据
 // fn: 从数据库中获取关于cpu的信息
@@ -297,8 +364,8 @@ const gpuGetList = async () => {
     gpuObj.firm = resultDB[i].firm
     gpuObj.model_name = resultDB[i].model_name
     gpuObj.price = resultDB[i].price
-    gpuObj.plugs_id = resultDB[i].gpu_plugs_id
-    gpuObj.recommended_power = resultDB[i].recommended_power
+    gpuObj.plugs_id = resultDB[i].plugs_id
+    gpuObj.recommended_prower = resultDB[i].recommended_prower
     
     gpuList.push(gpuObj)
   }
@@ -389,23 +456,50 @@ const powerGetList = async () => {
   powerShowList.value = powerList
 }
 
+// fn: 从数据库中获取关于内存条的信息
+const ramGetList = async () => {
+  var ramList = []
+
+  var resultDB = await requestingDB.getRamListDB()
+  console.log(resultDB)
+
+  // 将获取到的内存条列表存储到现在的新数组中
+  for (var i = 0; i < resultDB.length; i++) {
+    var ramObj = {}
+    ramObj.product_id = resultDB[i].product_id
+    ramObj.firm = resultDB[i].firm
+    ramObj.model_name = resultDB[i].model_name
+    ramObj.price = resultDB[i].price
+    ramObj.memory_size = resultDB[i].memory_size
+    
+    ramList.push(ramObj)
+  }
+  console.log(ramList)
+
+  // 动态展示到前端中
+  ramShowList.value = ramList
+}
 
 // 提交产品信息到订单数据表
+const nextPageClick = () => {
+  
+}
 
 </script>
 
 <style lang="less" scoped>
 
-.title {
-  position: relative;
-  .back {
+.back {
     position: absolute;
     background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
     width: 100%;
-    height: 100%;
+    height: auto ;
 
     z-index: -99;
   }
+
+.title {
+  position: relative;
   .text {
     padding-top: 10px;
     color: #fff;
@@ -460,7 +554,6 @@ const powerGetList = async () => {
 }
 
 .custom {
-  background-color: #84fab0;
   padding: 10px;
   .content {
     background-color: #fff;
@@ -469,5 +562,21 @@ const powerGetList = async () => {
   }
 }
 
+.block-text {
+  display: inline-block;
+}
+
+.btn {
+    font-size: 48px;
+
+    --van-button-large-height: 75px;
+    --van-button-default-font-size: 24px;
+
+    margin: 0 auto;
+    margin-top: 30px;
+    width: 80%;
+    -webkit-box-shadow: 7px 11px 10px 1px rgba(0,0,0,0.225); 
+    box-shadow: 7px 11px 10px 1px rgba(0,0,0,0.225);
+  }
 
 </style>
