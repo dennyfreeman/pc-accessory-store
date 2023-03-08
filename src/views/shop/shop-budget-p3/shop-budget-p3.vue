@@ -486,7 +486,6 @@ const ramGetList = async () => {
   ramShowList.value = ramList
 }
 
-// 提交产品信息到订单数据表
 const nextPageClick = () => {
   // 获取当前的套餐信息，并提交到订单中
   var comboListMes = budgetStore

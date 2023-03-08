@@ -183,6 +183,23 @@ class requestingDB {
     })
   }
 
+  // 查询订单
+  getOrderListDB(userId, status) {
+    return new Promise((resolve, reject) => {
+      db.collection(collectionPcStoreOrderList)
+      .where({
+        "order_status": status,
+        "user_id": userId
+      })
+      .get()
+      .then(res => {
+        resolve(res.data)
+      }).catch(err => {
+        reject(err)
+      })
+    })
+  }
+
 }
 
 
