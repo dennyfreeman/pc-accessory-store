@@ -200,6 +200,24 @@ class requestingDB {
     })
   }
 
+  // 更新订单状态
+  updateOrderList(orderId, updateMes) {
+    return new Promise((resolve, reject) => {
+      db.collection(collectionPcStoreOrderList)
+      .where({
+        order_id: orderId
+      })
+      .update({
+        detail: _.set({
+          address: updateMes.address,
+          contact: updateMes.contact,
+          number: updateMes.number
+        }),
+        order_status: 1
+      })
+    })
+  }
+
 }
 
 

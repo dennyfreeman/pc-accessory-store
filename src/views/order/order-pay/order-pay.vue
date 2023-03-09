@@ -41,15 +41,68 @@
           </van-cell>
         </van-cell-group>
       </div>
+
+      <!-- 展示订单信息 -->
+      <div class="order-list">
+        <div class="list">
+          <van-cell-group inset>
+            <van-cell>
+              <template #title>
+                <div class="user-mes cell-title">
+                  <span>用户名：{{ showUserId }}</span>
+                </div>
+                <div class="order-id cell-title">
+                  <span class="title_name">订单id：</span>
+                  <span class="message">{{showOrderId}}</span>
+                </div>
+                <div class="create-time cell-title">
+                  <span class="title_name">创建时间：</span>
+                  <span class="message">{{showOraderCreateTime}}</span>
+                </div>   
+              </template>
+              <template #label>
+                <!-- 展示订单的产品 -->
+                <div class="product">
+                  <div class="item" v-for="(item, index) in showProductsList" :key="index">
+                    <span class="name">{{ index }}：</span>
+                    <div class="right-box">
+                      <span class="firm">{{ item.firm }}&nbsp;-&nbsp;</span>
+                      <span class="model_name">{{ item.model_name }}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="price">
+                  <span>总价：￥{{ showPrice }}</span>
+                </div>
+              </template>            
+            </van-cell>
+          </van-cell-group>
+        </div>
+        
+      </div>
+
+      <!-- 按钮 -->
+      <div class="btn-list">
+        <div class="confirm btn">
+          <!-- 确认支付 -->
+          <van-button type="primary" @click="confrimPay">确认支付</van-button>
+          <!-- 返回 -->
+          <van-button type="primary" @click="backClick">返回</van-button>
+        </div>
+      </div>
     </div>
-
-
   </div>
 </template>
 
 <script setup>
+// 导入插件
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
+import { showDialog } from 'vant';
+import { showSuccessToast, showFailToast } from 'vant';
+
+// 导入数据表
+import requestingDB from "@/database/index"
 
 // 导入store
 import userOrderStore from "@/store/models/user-order/user-order"
@@ -61,6 +114,13 @@ const orderUnPayList = userOrderStore()
 const userId = orderUnPayList.userId
 const orderStatus = orderUnPayList.orderStatus
 const orderMes = orderUnPayList.orderMes
+const orderId = orderMes.order_id
+const orderProducts = orderMes.products_list
+// 动态展示数据
+const showUserId = ref(userId)
+const showOrderId = ref(orderId)
+const showOraderCreateTime = ref(orderMes.create_time)
+const showPrice = ref(orderMes.total_price)
 
 // 判断联系人是否已经填充
 const showContact = ref('')
@@ -80,6 +140,8 @@ if (orderMes.detail) {
   }
 }
 
+// 展示订单的产品信息
+const showProductsList = ref(orderProducts)
 
 
 // fn: 点击前往添加联系方式
@@ -95,6 +157,33 @@ const editDetail = () => {
 // fn: 点击前往编辑地址信息
 const editAddress = () => {
   router.push("/order-edit-address")
+}
+
+// fn: 点击提交修改数据库信息，并返回上一个页面
+const confrimPay = () => {
+  // 获取store中的信息
+  var order_store_detail = orderMes.detail
+  console.log(order_store_detail)
+
+  // 判断地址和联系信息是否已填好
+  if (!order_store_detail.address || !order_store_detail.contact || !order_store_detail.number) {
+    console.log("信息未填充完整")
+    showFailToast('失败文案');
+  } else {
+    // 若信息无误，则修改数据库中的订单信息
+    showDialog({
+      title: '支付成功',
+      message: '具体支付功能暂未能完善。',
+    }).then(() => {
+      // on close
+    });
+    requestingDB.updateOrderList(orderId, order_store_detail)
+  }
+}
+
+// fn: 返回上一页
+const backClick = () => {
+  router.back()
 }
 
 
@@ -136,6 +225,47 @@ const editAddress = () => {
 
   .address {
     margin-top: 10px;
+  }
+}
+
+.order-list {
+  margin-top: 10px;
+  .list {
+    .cell-title {
+      display: flex;
+      justify-content: space-between;
+      .message {
+        color: #989898;
+      }
+    }
+
+    .product {
+      margin-top: 10px;
+      font-size: 16px;
+      .item {
+        display: flex;
+        flex-direction: column;
+        .name {
+          color: #000;
+        }
+      }
+    }
+
+    .price {
+      margin-top: 10px;
+      color: #ff0000;
+      font-size: 24px;
+    }
+  }
+}
+
+.btn-list {
+  margin: 10px 10px;
+  .btn {
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 }
 </style>

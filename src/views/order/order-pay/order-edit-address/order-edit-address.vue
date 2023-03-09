@@ -44,6 +44,9 @@
 // 导入插件
 import { ref } from 'vue';
 import { areaList } from '@vant/area-data';
+import { showConfirmDialog } from 'vant';
+
+import { useRouter } from 'vue-router';
 
 // 导入store
 import userOrderStore from "@/store/models/user-order/user-order"
@@ -51,27 +54,29 @@ import userOrderStore from "@/store/models/user-order/user-order"
 const orderUnPayList = userOrderStore()
 const orderMes = orderUnPayList.orderMes
 
+const router = useRouter()
 
 // 获取来自store中的地址信息
 
 // 展示已有的数据到前端中
 const editingInfo = ref({
-  name: '123',
-  tel: '213',
+  tel: orderMes.detail.number,
+  name: orderMes.detail.contact
 })
 
-const onSave = (contact) => {
-  console.log(contact)
+// fn: 点击保存按钮的时候，将数据提交到store中
+const onSave = (contactInfo) => {
+  console.log(contactInfo)
 
   // 将所有的数据导入到store中
-  orderMes.detail.contact = contact.name
-  orderMes.detail.number = contact.tel
+  orderMes.detail.contact = contactInfo.name
+  orderMes.detail.number = contactInfo.tel
 
   // 格式化地址信息
-  var province = contact.province
-  var city = contact.city
-  var county = contact.county
-  var addressDetail = contact.addressDetail
+  var province = contactInfo.province
+  var city = contactInfo.city
+  var county = contactInfo.county
+  var addressDetail = contactInfo.addressDetail
 
   // var fullAddress = province? + city? + county? + addressDetail
   var fullAddress = `${province}${city}${county}${addressDetail}`
@@ -79,11 +84,33 @@ const onSave = (contact) => {
 
   console.log(orderMes)
 
+  // // 提示返回上一个页面
+  showConfirmDialog({
+    message:
+      '信息已修改，可确认返回上一个页面。',
+    }).then(() => {
+      // on confirm
+      router.back()
+    }).catch(() => {
+      // on cancel
+    });
+
 }
-const onDelete = () => showToast('delete');
+
+// fn: 点击删除按钮的时候，将数据清除
+const onDelete = (contactInfo) => {
+  contactInfo.name = ''
+  contactInfo.tel = ''
+  contactInfo.province = ''
+  contactInfo.city = ''
+  contactInfo.county = ''
+  contactInfo.addressDetail = ''
+}
+
 const onChangeDetail = (val) => {
   console.log(val)
 }
+
 </script>
 
 <style lang="less" scoped>
