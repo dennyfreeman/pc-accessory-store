@@ -4,9 +4,6 @@
     
     <!-- 头部 -->
     <div class="title">
-      <!-- 背景 -->
-      <div class="back">
-      </div>
       <div class="text">
         <div class="content">
           <span class="title-name">预算选配</span>

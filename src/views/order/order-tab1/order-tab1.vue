@@ -2,7 +2,6 @@
   <div class="orderTab1">
     <button @click="getBtn">获取订单</button>
     <van-cell-group inset>
-
       <div class="list" v-for="(item, index) in showOrderUnPayList" :key="index">
         <van-cell>
           <template #title>
@@ -18,7 +17,7 @@
               </div>
               <!-- 按钮 -->
               <div class="btn">
-                <van-button type="primary" size="mini">确认支付</van-button>
+                <van-button type="primary" size="mini" @click="confirmPay(item)">确认支付</van-button>
                 <van-button type="primary" size="mini">删除</van-button>
               </div>
             </div>
@@ -27,88 +26,43 @@
             <!-- 展示订单的产品 -->
             <div class="product">
               <div class="item" v-for="(goods, indey) in item.products_list" :key="indey">
-                <span class="name">{{ item.products_list.indey }}：</span>
+                <span class="name">{{ indey }}：</span>
                 <span>{{ goods.firm }}&nbsp;-&nbsp;</span>
                 <span>{{ goods.model_name }}</span>
               </div>
             </div>
             <!-- 价格 -->
             <div class="price">
-                <span>￥123</span>
+                <span>￥{{ item.total_price }}</span>
               </div>
           </template>
         </van-cell>
       </div>
-
-      <div class="list">
-        <van-cell>
-          <template #title>
-            <span>创建时间：</span>
-            <span>create_time</span>
-          </template>
-          <template #value>
-            <div class="right-content">
-              <!-- 订单id -->
-              <div class="order-id">
-                <span>订单id：</span>
-                <span>order_id</span>
-              </div>
-              <!-- 按钮 -->
-              <div class="btn">
-                <van-button type="primary" size="mini">确认支付</van-button>
-                <van-button type="primary" size="mini">删除</van-button>
-              </div>
-            </div>
-          </template>
-          <template #label>
-            <!-- 展示订单的产品 -->
-            <div class="product">
-              <div class="item">
-                <span class="name">CPU：</span>
-                <span>firm&nbsp;-&nbsp;</span>
-                <span>model_name</span>
-              </div>
-              <div class="item">
-                <span>CPU：</span>
-                <span>firm&nbsp;-&nbsp;</span>
-                <span>model_name</span>
-              </div>
-              <div class="item">
-                <span>CPU：</span>
-                <span>firm&nbsp;-&nbsp;</span>
-                <span>model_name</span>
-              </div>
-              <div class="item">
-                <span>CPU：</span>
-                <span>firm&nbsp;-&nbsp;</span>
-                <span>model_name</span>
-              </div>
-            </div>
-            <!-- 价格 -->
-            <div class="price">
-                <span>￥123</span>
-              </div>
-          </template>
-        </van-cell>
-      </div>
-
-      
       
     </van-cell-group>
   </div>
 </template>
 
 <script setup>
+// 导入插件
+import { useRouter } from 'vue-router';
+
 // 导入数据表
 import requestingDB from "@/database/index"
 
 // 导入store
 import userLogMessage from "@/store/models/user-mes"
+import userOrderStore from "@/store/models/user-order/user-order"
 import { ref } from "vue";
 
+const router = useRouter()
+
 // 获取当前用户的信息
-const userId = userLogMessage.userId
-const userName = userLogMessage.userName
+const userId = userLogMessage().userId
+const userName = userLogMessage().userName
+// 获取临时订单信息
+const orderStore = userOrderStore()
+
 // 当前页面为待支付状态
 const order_status = 0
 
@@ -118,6 +72,7 @@ const showOrderUnPayList = ref([])
 // 根据用户的id获取相对应的订单表
 const orderUnPay = async () => {
 
+  // 获取待支付订单
   var resultDB = await requestingDB.getOrderListDB(userId, order_status)
   console.log(resultDB)
 
@@ -132,6 +87,27 @@ const orderUnPay = async () => {
 
 }
 
+// 当用户点击确认支付
+const confirmPay = (orderToPay) => {
+  // 获取当前套餐信息
+  console.log(orderToPay)
+
+  // 将套餐信息存储到订单临时store中
+  orderStore.orderMes = orderToPay
+  orderStore.orderStatus = 0
+  orderStore.userId = userId
+
+  console.log(orderStore)
+
+  // 前往支付页面
+  router.push("/order-pay")
+}
+
+
+// 当用户点击删除
+
+
+// 点击获取当前未支付订单
 const getBtn = () => {
   orderUnPay()
 }
@@ -141,6 +117,10 @@ const getBtn = () => {
 </script>
 
 <style lang="less" scoped>
+.orderTab1 {
+  padding-bottom: 60px;
+}
+
 .show-order {
   .list {
     .right-content {

@@ -44,6 +44,34 @@ const router = createRouter({
       component: () => import("@/views/order/order.vue")
     },
     {
+      path: "/order-pay",
+      component: () => import("@/views/order/order-pay/order-pay.vue"),
+      meta: {
+        hideTabBar: true
+      }
+    },
+    {
+      path: "/order-add-detail",
+      component: () => import("@/views/order/order-pay/order-add-detail/order-add-detail.vue"),
+      meta: {
+        hideTabBar: true
+      }
+    },
+    {
+      path: "/order-edit-detail",
+      component: () => import("@/views/order/order-pay/order-edit-detail/order-edit-detail.vue"),
+      meta: {
+        hideTabBar: true
+      }
+    },
+    {
+      path: "/order-edit-address",
+      component: () => import("@/views/order/order-pay/order-edit-address/order-edit-address.vue"),
+      meta: {
+        hideTabBar: true
+      }
+    },
+    {
       path: "/profile",
       component: () => import("@/views/profile/profile.vue")
     },
