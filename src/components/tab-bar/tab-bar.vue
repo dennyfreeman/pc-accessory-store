@@ -3,7 +3,7 @@
     <van-tabbar v-model="currentIndex"
                 class="tab-bar">
       <template v-for="(item, index) in tabbarData">
-        <van-tabbar-item :to="item.path" icon="home-o">
+        <van-tabbar-item :to="item.path" :icon="item.icon">
           <template #default>
             <span>{{ item.text }}</span>
           </template>
@@ -12,7 +12,6 @@
     </van-tabbar>
   </div>
 </template>
-
 <script setup>
 import { ref } from 'vue';
 
@@ -20,15 +19,18 @@ import { ref } from 'vue';
 const tabbarData = [
   {
     text: "选购",
-    path: "/shop"
+    path: "/shop",
+    icon: "shopping-cart-o"
   },
   {
     text: "订单",
-    path: "/order"
+    path: "/order",
+    icon: "orders-o"
   },
   {
     text: "个人",
-    path: "/profile"
+    path: "/profile",
+    icon: "user-o"
   },
 ]
 
