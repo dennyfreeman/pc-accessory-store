@@ -123,6 +123,7 @@ const getBtn = () => {
 
 .show-order {
   .list {
+    border-bottom: 1px dashed #b7b7b7;
     .right-content {
       height: 100%;
       display: flex;

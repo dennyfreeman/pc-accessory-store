@@ -1,5 +1,13 @@
 <template>
   <div class="orderPay back">
+    <!-- 插件 -->
+    <!-- 浮窗插件 -->
+    <van-toast v-model:show="show" style="padding: 0">
+      <template #message>
+        <van-image :src="image" width="200" height="140" style="display: block" />
+      </template>
+    </van-toast>
+
     <!-- 头部 -->
     <div class="title">
       <div class="text">
@@ -167,8 +175,7 @@ const confrimPay = () => {
 
   // 判断地址和联系信息是否已填好
   if (!order_store_detail.address || !order_store_detail.contact || !order_store_detail.number) {
-    console.log("信息未填充完整")
-    showFailToast('失败文案');
+    showFailToast('请填写信息');
   } else {
     // 若信息无误，则修改数据库中的订单信息
     showDialog({
@@ -176,6 +183,7 @@ const confrimPay = () => {
       message: '具体支付功能暂未能完善。',
     }).then(() => {
       // on close
+      router.back()
     });
     requestingDB.updateOrderList(orderId, order_store_detail)
   }

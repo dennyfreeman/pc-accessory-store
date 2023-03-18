@@ -200,7 +200,7 @@ class requestingDB {
     })
   }
 
-  // 更新订单状态
+  // 更新订单信息
   updateOrderList(orderId, updateMes) {
     return new Promise((resolve, reject) => {
       db.collection(collectionPcStoreOrderList)
@@ -213,7 +213,26 @@ class requestingDB {
           contact: updateMes.contact,
           number: updateMes.number
         }),
+        progress: _.set({
+          transport_mes: "货物已送达到目的地，请点击签收。"
+        }),
         order_status: 1
+      })
+    })
+  }
+
+  // 更新订单状态
+  updateOrderStatus(orderId) {
+    return new Promise((resolve, reject) => {
+      db.collection(collectionPcStoreOrderList)
+      .where({
+        order_id: orderId
+      })
+      .update({
+        progress: _.set({
+          transport_status: 1
+        }),
+        order_status: 2
       })
     })
   }

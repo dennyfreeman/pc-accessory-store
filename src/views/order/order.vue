@@ -26,9 +26,9 @@
           <!-- 待收货 -->
           <order-tab2></order-tab2>
         </van-tab>
-        <van-tab title="标签 3">
+        <van-tab title="已完成">
           <!-- 已完成 -->
-          内容 3
+          <order-tab3></order-tab3>
         </van-tab>
       </van-tabs>
     </div>
@@ -46,6 +46,7 @@ import { ref } from 'vue';
 // 待支付页面
 import orderTab1 from "./order-tab1/order-tab1.vue"
 import orderTab2 from "./order-tab2/order-tab2.vue"
+import orderTab3 from "./order-tab3/order-tab3.vue"
 
 const orderListActive = ref(0)
 

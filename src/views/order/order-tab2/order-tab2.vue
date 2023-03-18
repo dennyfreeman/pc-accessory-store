@@ -1,5 +1,11 @@
 <template>
   <div class="orderTab2">
+    <!-- 插件 -->
+    <!-- 浮窗 -->
+    <van-dialog v-model:show="show" title="标题" show-cancel-button>
+      <img src="https://fastly.jsdelivr.net/npm/@vant/assets/apple-3.jpeg" />
+    </van-dialog>
+
     <button @click="getBtn">获取订单</button>
     <van-cell-group inset>
       <div class="list" v-for="(item, index) in showOrderHadPayList" :key="index">
@@ -7,6 +13,7 @@
           <template #title>
             <span>创建时间：</span>
             <span>{{ item.create_time }}</span>
+            
           </template>
           <template #value>
             <div class="right-content">
@@ -17,7 +24,7 @@
               </div>
               <!-- 按钮 -->
               <div class="btn">
-                <van-button type="primary" size="mini">确认收货</van-button>
+                <van-button type="primary" size="mini" @click="confirmReceive(item.order_id)">确认收货</van-button>
               </div>
             </div>
           </template>
@@ -30,21 +37,27 @@
                 <span>{{ goods.model_name }}</span>
               </div>
             </div>
+            <!-- 运输状态 -->
+            <div class="transport">
+              <div class="text">货物状态：</div>
+              <span>{{ item.progress.transport_mes }}</span>
+            </div>
             <!-- 价格 -->
             <div class="price">
-                <span>￥{{ item.total_price }}</span>
-              </div>
+              <span>￥{{ item.total_price }}</span>
+            </div>
           </template>
         </van-cell>
       </div>
 
-</van-cell-group>
+    </van-cell-group>
   </div>
 </template>
 
 <script setup>
 // 导入插件
 import { useRouter } from 'vue-router';
+import { showConfirmDialog  } from 'vant';
 
 // 导入数据表
 import requestingDB from "@/database/index"
@@ -73,22 +86,54 @@ const showOrderHadPayList = ref([])
 // 根据用户的id获取相对应的订单表
 const orderHadPay = async () => {
 
-// 获取待支付订单
-var resultDB = await requestingDB.getOrderListDB(userId, order_status)
-console.log(resultDB)
+  // 获取待支付订单
+  var resultDB = await requestingDB.getOrderListDB(userId, order_status)
+  console.log(resultDB)
 
-for (var i = 0; i < resultDB.length; i++) {
-  var orderHadPayObj = {}
+  for (var i = 0; i < resultDB.length; i++) {
+    var orderHadPayObj = {}
 
-  orderHadPayObj = resultDB[i]
-  // 将所有数据保存到前端展示列表中
-  showOrderHadPayList.value.push(orderHadPayObj)
+    orderHadPayObj = resultDB[i]
+    // 将所有数据保存到前端展示列表中
+    showOrderHadPayList.value.push(orderHadPayObj)
+  }
+  console.log(showOrderHadPayList.value)
 }
-console.log(showOrderHadPayList.value)
 
+// 修改对应订单的状态
+const orderHadReceive = async (orderId) => {
+  // 获取当前订单的id
+  var order_id = orderId
+
+  // 通过订单id修改对应的订单状态
+  requestingDB.updateOrderStatus(order_id)
 }
 
-// fn: 点击确认收货按钮，修改
+// fn: 点击确认收货按钮，修改订单的状态
+const confirmReceive = (orderId) => {
+  // 获取当前订单的id
+  console.log(orderId)
+
+  var order_id = orderId
+
+  orderHadReceive(order_id)
+
+  // 弹出浮窗确认画面
+  // showConfirmDialog({
+  //   title: '确认收货',
+  //   message:
+  //     '请确认无误您的货物已收下，如已收到请点击签收。',
+  // })
+  //   .then(() => {
+  //     // on confirm
+  //   })
+  //   .catch(() => {
+  //     // on cancel
+  //   });
+}
+
+
+
 
 // 临时功能，点击获取订单信息
 const getBtn = () => {
@@ -99,6 +144,7 @@ const getBtn = () => {
 <style lang="less" scoped>
 .show-order {
   .list {
+    border-bottom: 1px dashed #b7b7b7;
     .right-content {
       height: 100%;
       display: flex;
@@ -110,6 +156,14 @@ const getBtn = () => {
         .name {
           color: #000;
         }
+      }
+    }
+    .transport {
+      border-top: 1px solid #dcdcdc;
+      margin-top: 10px;
+      .text {
+        font-size: 14px;
+        color: #000;
       }
     }
     .price {
