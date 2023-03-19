@@ -41,6 +41,7 @@
         <van-button type="primary" 
           size="large"
           color="linear-gradient(90deg, #84fab0 0%, #8fd3f4 100%)"
+          @click="shopCustomClick"
         >自定义选配</van-button>
       </div>
     </div>
@@ -67,6 +68,14 @@ const shopBudgetClick = () => {
   console.log("budget")
   router.push({
     path: "/shop-budget-p1"
+  })
+}
+
+// 自定义按钮发生点击
+const shopCustomClick = () => {
+  console.log("custom")
+  router.push({
+    path: "/shop-custom-p1"
   })
 }
 

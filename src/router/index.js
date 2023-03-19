@@ -40,6 +40,13 @@ const router = createRouter({
       }
     },
     {
+      path: "/shop-custom-p1",
+      component: () => import("@/views/shop/shop-custom-p1/shop-custom-p1.vue"),
+      meta: {
+        hideTabBar: true
+      }
+    },
+    {
       path: "/order",
       component: () => import("@/views/order/order.vue")
     },

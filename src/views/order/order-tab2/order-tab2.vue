@@ -7,50 +7,52 @@
     </van-dialog>
 
     <button @click="getBtn">获取订单</button>
-    <van-cell-group inset>
-      <div class="list" v-for="(item, index) in showOrderHadPayList" :key="index">
-        <van-cell>
-          <template #title>
-            <span>创建时间：</span>
-            <span>{{ item.create_time }}</span>
-            
-          </template>
-          <template #value>
-            <div class="right-content">
-              <!-- 订单id -->
-              <div class="order-id">
-                <span>订单id：</span>
-                <span>{{ item.order_id }}</span>
+    <div class="list-content">
+      <van-cell-group inset>
+        <div class="list" v-for="(item, index) in showOrderHadPayList" :key="index">
+          <van-cell>
+            <template #title>
+              <span>创建时间：</span>
+              <span>{{ item.create_time }}</span>
+              
+            </template>
+            <template #value>
+              <div class="right-content">
+                <!-- 订单id -->
+                <div class="order-id">
+                  <span>订单id：</span>
+                  <span>{{ item.order_id }}</span>
+                </div>
+                <!-- 按钮 -->
+                <div class="btn">
+                  <van-button type="primary" size="mini" @click="confirmReceive(item.order_id)">确认收货</van-button>
+                </div>
               </div>
-              <!-- 按钮 -->
-              <div class="btn">
-                <van-button type="primary" size="mini" @click="confirmReceive(item.order_id)">确认收货</van-button>
+            </template>
+            <template #label>
+              <!-- 展示订单的产品 -->
+              <div class="product">
+                <div class="item" v-for="(goods, indey) in item.products_list" :key="indey">
+                  <span class="name">{{ indey }}：</span>
+                  <span>{{ goods.firm }}&nbsp;-&nbsp;</span>
+                  <span>{{ goods.model_name }}</span>
+                </div>
               </div>
-            </div>
-          </template>
-          <template #label>
-            <!-- 展示订单的产品 -->
-            <div class="product">
-              <div class="item" v-for="(goods, indey) in item.products_list" :key="indey">
-                <span class="name">{{ indey }}：</span>
-                <span>{{ goods.firm }}&nbsp;-&nbsp;</span>
-                <span>{{ goods.model_name }}</span>
+              <!-- 运输状态 -->
+              <div class="transport">
+                <div class="text">货物状态：</div>
+                <span>{{ item.progress.transport_mes }}</span>
               </div>
-            </div>
-            <!-- 运输状态 -->
-            <div class="transport">
-              <div class="text">货物状态：</div>
-              <span>{{ item.progress.transport_mes }}</span>
-            </div>
-            <!-- 价格 -->
-            <div class="price">
-              <span>￥{{ item.total_price }}</span>
-            </div>
-          </template>
-        </van-cell>
-      </div>
-
-    </van-cell-group>
+              <!-- 价格 -->
+              <div class="price">
+                <span>￥{{ item.total_price }}</span>
+              </div>
+            </template>
+          </van-cell>
+        </div>
+      </van-cell-group>
+    </div>
+    
   </div>
 </template>
 
@@ -90,6 +92,7 @@ const orderHadPay = async () => {
   var resultDB = await requestingDB.getOrderListDB(userId, order_status)
   console.log(resultDB)
 
+  showOrderHadPayList.value = []
   for (var i = 0; i < resultDB.length; i++) {
     var orderHadPayObj = {}
 
@@ -116,20 +119,24 @@ const confirmReceive = (orderId) => {
 
   var order_id = orderId
 
-  orderHadReceive(order_id)
+  // orderHadReceive(order_id)
 
   // 弹出浮窗确认画面
-  // showConfirmDialog({
-  //   title: '确认收货',
-  //   message:
-  //     '请确认无误您的货物已收下，如已收到请点击签收。',
-  // })
-  //   .then(() => {
-  //     // on confirm
-  //   })
-  //   .catch(() => {
-  //     // on cancel
-  //   });
+  showConfirmDialog({
+    title: '确认收货',
+    message:
+      '请确认无误您的货物已收下，如已收到请点击签收。',
+  })
+    .then(() => {
+      // on confirm
+      // 当用户确认收货，则修改数据表信息
+      orderHadReceive(order_id)
+      // 将页面重新刷新一遍
+      orderHadPay()
+    })
+    .catch(() => {
+      // on cancel
+    });
 }
 
 
@@ -143,35 +150,39 @@ const getBtn = () => {
 
 <style lang="less" scoped>
 .show-order {
-  .list {
-    border-bottom: 1px dashed #b7b7b7;
-    .right-content {
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .product {
-      .item {
-        .name {
+  .list-content {
+    padding-bottom: 60px;
+    .list {
+      border-bottom: 1px dashed #b7b7b7;
+      .right-content {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .product {
+        .item {
+          .name {
+            color: #000;
+          }
+        }
+      }
+      .transport {
+        border-top: 1px solid #dcdcdc;
+        margin-top: 10px;
+        .text {
+          font-size: 14px;
           color: #000;
         }
       }
-    }
-    .transport {
-      border-top: 1px solid #dcdcdc;
-      margin-top: 10px;
-      .text {
-        font-size: 14px;
-        color: #000;
+      .price {
+        padding-top: 10px;
+        font-size: 18px;
+        color: #c90101;
       }
+        
     }
-    .price {
-      padding-top: 10px;
-      font-size: 18px;
-      color: #c90101;
-    }
-      
   }
+  
 }
 </style>

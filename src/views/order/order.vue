@@ -32,10 +32,6 @@
         </van-tab>
       </van-tabs>
     </div>
-    
-
-    
-
   </div>
 </template>
 

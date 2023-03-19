@@ -237,6 +237,23 @@ class requestingDB {
     })
   }
 
+  // 更新订单评价信息
+  updateOrderComment(orderId, commentMes) {
+    return new Promise((resolve, reject) => {
+      db.collection(collectionPcStoreOrderList)
+      .where({
+        order_id: orderId
+      })
+      .update({
+        comment: _.set({
+          score: commentMes.score,
+          comment: commentMes.message,
+          status: 1
+        })
+      })
+    })
+  }
+
 }
 
 
