@@ -1,13 +1,6 @@
 <template>
-  <div class="shopCustomP1">
-    <!-- 插件 -->
-    <!-- 浮窗 -->
-    <van-toast v-model:show="show" style="padding: 0">
-      <template #message>
-        <van-image :src="image" width="200" height="140" style="display: block" />
-      </template>
-    </van-toast>
-
+  <div class="shopCustomP2">
+    
     <!-- 头部 -->
     <div class="title">
       <!-- 背景 -->
@@ -25,28 +18,28 @@
     <!-- 文字提示 -->
     <div class="attention">
       <div class="text1">
-        <span>更好的定制</span>
+        <span>下一个是？</span>
       </div>
       <div class="text2">
-        <span>不了解如何适配接口没关系，只需跟着我们的步骤您就能选出您心爱的电脑。</span>
+        <span>为了适配您心爱的CPU，接下来您要选择您的主板。</span>
       </div>
     </div>
-
-    <!-- CPU选择 -->
-    <div class="cpu-select">
+    
+    <!-- 主板选择 -->
+    <div class="motherboard-select">
       <div class="content">
         <div class="left-box">
           <!-- 标题 -->
           <div class="title">
-            <span>CPU选择</span>
+            <span>主板选择</span>
           </div>
         </div>
         <div class="right-box">
           <div class="list">
-            <van-radio-group v-model="cpuSelector">
+            <van-radio-group v-model="motherBoardSelector">
               <van-cell-group inset>
-                <div class="item" v-for="(item, index) in cpuShowList" :key="index">
-                  <van-cell clickable @click="cpuGetProductId(index, item.product_id, item)">
+                <div class="item" v-for="(item, index) in motherBoardShowList" :key="index">
+                  <van-cell clickable @click="motherGetProductId(index, item.product_id, item)">
                     <template #right-icon>
                       <van-radio :name = index />
                     </template>
@@ -64,16 +57,10 @@
       </div>
     </div>
 
-    <!-- 下一步按钮 -->
-    <div class="btn-nextpage">
-      <div class="btn">
-        <van-button 
-          type="primary" 
-          size="large"
-          color="linear-gradient(270deg, #84fab0 0%, #8fd3f4 100%)"
-          @click="nextPageClick"
-          >下一步</van-button>
-      </div>
+    <!-- 价格总计 -->
+    <div class="total-price">
+      <span>现价格：</span>
+      <span>￥</span>
     </div>
 
   </div>
@@ -92,83 +79,64 @@ import userCustomStore from "@/store/models/user-custom/user-custom"
 // 导入数据表
 import requestingDB from "@/database/index"
 
-const router = useRouter()
-
 // 获取store中当前套餐的信息
 const logedUser = userLogMessage()
 const customStore = userCustomStore()
-const userId = logedUser.userId
-// 把当前用户的id记录到套餐store中
-customStore.userId = userId
-// 获取当前套餐的cpu产品信息
+// 获取当前套餐的产品信息
 console.log(customStore)
 
+// 获取当前套餐中cpu的接口类型
+const cpu_plugs_id = customStore.customMes.products?.cpu.plugs_id
+console.log(cpu_plugs_id)
 
-// 动态获取当前选择的cpu
-const cpuSelector = ref()
-// 动态展示cpu列表
-const cpuShowList = ref([])
+// 动态获取当前选择的主板
+const motherBoardSelector = ref()
+// 动态展示主板列表
+const motherBoardShowList = ref([])
 
-// fn: 获取当前点击的cpu信息
-const cpuGetProductId = (index, cpu_product_id, product_mes) => {
+// fn: 获取当前点击的主板信息
+const motherGetProductId = (index, motherboard_product_id, product_mes) => {
   var productMes = product_mes
-  cpuSelector.value = index
-  // 获取当前cpu的价格
-  var cpu_price = productMes.price
-  
-  // console.log(index, cpu_product_id, productMes)
-  //并把该信息修改到store中的套餐信息
-  var cpuObj = {
-    products: {
-      cpu: productMes
-    }
-  }
-  customStore.customMes = cpuObj
-  customStore.total_price = cpu_price
-  console.log("修改store中的cpu", customStore)
+  motherBoardSelector.value = index
+  // 获取当前主板的价格
+  var motherboard_price = productMes.price
+
+  // 把该信息修改到store中的套餐信息中
+  customStore.customMes.products.motherboard = productMes
+  customStore.total_price = customStore.total_price + motherboard_price
+  console.log("修改store中的主板", customStore)
 }
 
+// fn: 从数据库中获取关于主板的信息
+const motherBoardGetList = async() => {
+  var motherBoardList = []
+  var plugs = cpu_plugs_id
 
-// fn: 从数据库中获取关于cpu的信息
-const cpuGetList = async () => {
-  var cpuList = []
+  // 根据cpu接口类型获取主板
+  var resultDB = await requestingDB.getMotherBoardListDB(plugs)
+  console.log(resultDB)
 
-  // 直接获取cpu列表
-  var resultDB = await requestingDB.getCPUListDB()
-  // console.log(resultDB)
-
-  // 将获取的cpu列表存储到现在的新的数组中
+  // 将获取到的主板列表存储到现在的数据中
   for (var i = 0; i < resultDB.length; i++) {
-    var cpuObj = {}
-    cpuObj.product_id = resultDB[i].product_id
-    cpuObj.firm = resultDB[i].firm
-    cpuObj.model_name = resultDB[i].model_name
-    cpuObj.price = resultDB[i].price
-    cpuObj.plugs_id = resultDB[i].cpu_plugs_id
+    var mdObj = {}
+    mdObj.product_id = resultDB[i].product_id
+    mdObj.firm = resultDB[i].firm
+    mdObj.model_name = resultDB[i].model_name
+    mdObj.price = resultDB[i].price
+    mdObj.cpu_plugs_id = resultDB[i].cpu_plugs_id
     
-    cpuList.push(cpuObj)
+    motherBoardList.push(mdObj)
   }
-  console.log(cpuList)
+  console.log(motherBoardList)
 
   // 动态展示到前端中
-  cpuShowList.value = cpuList
+  motherBoardShowList.value = motherBoardList
 }
 
-// 获取数据表中的数据
-cpuGetList()
+// 获取主板数据表
+motherBoardGetList()
 
 // fn: 点击下一步跳转
-const nextPageClick = () => {
-  // 判断当前用户是否已选择
-  if (cpuSelector.value === undefined) {
-    // 未选择则弹出错误窗口
-    showFailToast('请选择一个规格');
-  } else {
-    // 已选择好可以跳转到下一个页面
-    console.log("跳转")
-    router.push("/shop-custom-p2")
-  }
-}
 
 </script>
 
@@ -216,7 +184,7 @@ const nextPageClick = () => {
     }
   }
 
-  .cpu-select {
+  .motherboard-select {
     margin: 30px 30px 0 30px;
     .content {
       border-radius: 15px;
@@ -255,17 +223,11 @@ const nextPageClick = () => {
       
     }
   }
-
-  .btn {
-    font-size: 48px;
-
-    --van-button-large-height: 100px;
-    --van-button-default-font-size: 24px;
-
-    margin: 0 auto;
-    margin-top: 30px;
-    width: 80%;
-    -webkit-box-shadow: 7px 11px 10px 1px rgba(0,0,0,0.225); 
-    box-shadow: 7px 11px 10px 1px rgba(0,0,0,0.225);
+  .total-price {
+    margin: 10px 30px 0 30px;
+    border-radius: 15px;
+    padding: 10px 20px;
+    background-color: #fff;
+    font-size: 28px;
   }
 </style>

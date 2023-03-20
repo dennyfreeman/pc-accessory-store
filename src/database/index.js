@@ -78,18 +78,30 @@ class requestingDB {
 
   // 查询cpu表，对标cpu接口
   getCPUListDB(plugs = "") {
-    return new Promise((resolve, reject) => {
-      db.collection(collectionPcStoreCPUList)
-      .where({
-        "cpu_plugs_id": plugs
+    if (plugs) {
+      return new Promise((resolve, reject) => {
+        db.collection(collectionPcStoreCPUList)
+        .where({
+          "cpu_plugs_id": plugs
+        })
+        .get()
+        .then(res => {
+          resolve(res.data)
+        }).catch(err => {
+          reject(err)
+        })
       })
-      .get()
-      .then(res => {
-        resolve(res.data)
-      }).catch(err => {
-        reject(err)
+    } else {
+      return new Promise((resolve, reject) => {
+        db.collection(collectionPcStoreCPUList)
+        .get()
+        .then(res => {
+          resolve(res.data)
+        }).catch(err => {
+          reject(err)
+        })
       })
-    })
+    }
   }
 
   // 查询gpu表，对标gpu接口

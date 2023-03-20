@@ -283,7 +283,6 @@ const router = useRouter()
 const budgetStore = userBudgetStore()
 const budget = budgetStore.budget
 const userId = budgetStore.userId
-const comboMes = budgetStore.comboMes
 console.log(budget)
 
 // 最终获取套餐的新数组（只限前三位），必须动态
