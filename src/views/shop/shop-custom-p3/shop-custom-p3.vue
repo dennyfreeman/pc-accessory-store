@@ -57,6 +57,24 @@
       </div>
     </div>
 
+     <!-- 价格总计 -->
+     <div class="total-price">
+      <span>现价格：</span>
+      <span>￥{{ totalPriceShow }}</span>
+    </div>
+
+    <!-- 下一步按钮 -->
+    <div class="btn-nextpage">
+      <div class="btn">
+        <van-button 
+          type="primary" 
+          size="large"
+          color="linear-gradient(270deg, #84fab0 0%, #8fd3f4 100%)"
+          @click="nextPageClick"
+          >下一步</van-button>
+      </div>
+    </div>
+
 
   </div>
 </template>
@@ -87,7 +105,8 @@ const gpuShowList = ref([])
 // 动态获取当前选择的GPU
 const gpuSelector = ref()
 // 动态展示总价格
-const totalPriceShow = ref(customStore.total_price)
+const total_price = customStore.total_price
+const totalPriceShow = ref(total_price)
 
 // fn: 获取当前点击的GPU信息
 const gpuGetProductId = (index, gpu_product_id, product_mes) => {
@@ -99,8 +118,7 @@ const gpuGetProductId = (index, gpu_product_id, product_mes) => {
   // 把该信息修改到store中的套餐信息中
   customStore.customMes.products.gpu = productMes
   // 总价格
-  customStore.total_price = customStore.total_price + gpu_price
-  totalPriceShow.value = customStore.total_price
+  totalPriceShow.value= total_price + gpu_price
   console.log("修改store中的gpu", customStore)
 }
 
@@ -132,6 +150,21 @@ const gpuGetList = async () => {
 
 // 获取GPU数据表
 gpuGetList()
+
+// fn: 点击下一步跳转
+const nextPageClick = () => {
+  // 判断当前用户是否已选择
+  if (gpuSelector.value === undefined) {
+    // 未选择则弹出错误窗口
+    showFailToast('请选择一个规格');
+  } else {
+    // 把总价格修改到store中
+    customStore.total_price = totalPriceShow.value
+    // 已选择好可以跳转到下一个页面
+    console.log("跳转")
+    router.push("/shop-custom-p4")
+  }
+}
 
 </script>
 
@@ -216,5 +249,25 @@ gpuGetList()
       
       
     }
+  }
+
+  .total-price {
+    margin: 10px 30px 0 30px;
+    border-radius: 15px;
+    padding: 10px 20px;
+    background-color: #fff;
+    font-size: 28px;
+  }
+  .btn {
+    font-size: 48px;
+
+    --van-button-large-height: 100px;
+    --van-button-default-font-size: 24px;
+
+    margin: 0 auto;
+    margin-top: 30px;
+    width: 80%;
+    -webkit-box-shadow: 7px 11px 10px 1px rgba(0,0,0,0.225); 
+    box-shadow: 7px 11px 10px 1px rgba(0,0,0,0.225);
   }
 </style>

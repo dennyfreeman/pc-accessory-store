@@ -1,13 +1,5 @@
 <template>
-  <div class="shopCustomP2">
-    <!-- 插件 -->
-    <!-- 浮窗 -->
-    <van-toast v-model:show="show" style="padding: 0">
-      <template #message>
-        <van-image :src="image" width="200" height="140" style="display: block" />
-      </template>
-    </van-toast>
-
+  <div class="shopCustomP5">
     <!-- 头部 -->
     <div class="title">
       <!-- 背景 -->
@@ -25,28 +17,28 @@
     <!-- 文字提示 -->
     <div class="attention">
       <div class="text1">
-        <span>下一个是？</span>
+        <span>充足的空间</span>
       </div>
       <div class="text2">
-        <span>为了适配您心爱的CPU，接下来您要选择您的主板。</span>
+        <span>为您的电脑选择硬盘，让您保存更多的美好事物。</span>
       </div>
     </div>
-    
-    <!-- 主板选择 -->
-    <div class="motherboard-select">
+
+    <!-- 硬盘选择 -->
+    <div class="harddrive-select">
       <div class="content">
         <div class="left-box">
           <!-- 标题 -->
           <div class="title">
-            <span>主板选择</span>
+            <span>硬盘选择</span>
           </div>
         </div>
         <div class="right-box">
           <div class="list">
-            <van-radio-group v-model="motherBoardSelector">
+            <van-radio-group v-model="hardDriveSelector">
               <van-cell-group inset>
-                <div class="item" v-for="(item, index) in motherBoardShowList" :key="index">
-                  <van-cell clickable @click="motherGetProductId(index, item.product_id, item)">
+                <div class="item" v-for="(item, index) in hardDriveShowList" :key="index">
+                  <van-cell clickable @click="hardDriveProductId(index, item.product_id, item)">
                     <template #right-icon>
                       <van-radio :name = index />
                     </template>
@@ -81,7 +73,6 @@
           >下一步</van-button>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -106,65 +97,64 @@ const customStore = userCustomStore()
 // 获取当前套餐的产品信息
 console.log(customStore)
 
-// 获取当前套餐中cpu的接口类型
-const cpu_plugs_id = customStore.customMes.products?.cpu.plugs_id
-console.log(cpu_plugs_id)
-
-// 动态获取当前选择的主板
-const motherBoardSelector = ref()
-// 动态展示主板列表
-const motherBoardShowList = ref([])
+// 动态展示硬盘列表
+const hardDriveShowList = ref([])
+// 动态获取当前选择的硬盘
+const hardDriveSelector = ref()
 // 动态展示总价格
 const total_price = customStore.total_price
 const totalPriceShow = ref(total_price)
 
-// fn: 获取当前点击的主板信息
-const motherGetProductId = (index, motherboard_product_id, product_mes) => {
+// fn: 获取当前点击的硬盘信息
+const hardDriveProductId = (index, harddrive_product_id, product_mes) => {
   var productMes = product_mes
-  motherBoardSelector.value = index
-  // 获取当前主板的价格
-  var motherboard_price = productMes.price
+  hardDriveSelector.value = index
+  // 获取当前硬盘的价格
+  var harddrive_price = productMes.price
 
-  // 把该信息修改到store中的套餐信息中
-  customStore.customMes.products.motherboard = productMes
+  // 把信息修改到store中的套餐信息中
+  customStore.customMes.products.harddrive = productMes
+  
   // 总价格
-  totalPriceShow.value = total_price + motherboard_price
-  console.log("修改store中的主板", customStore)
+  totalPriceShow.value= total_price + harddrive_price
+  console.log("修改store中的硬盘", customStore)
 }
 
-// fn: 从数据库中获取关于主板的信息
-const motherBoardGetList = async () => {
-  var motherBoardList = []
-  var plugs = cpu_plugs_id
 
-  // 根据cpu接口类型获取主板
-  var resultDB = await requestingDB.getMotherBoardListDB(plugs)
+// fn: 从数据库中获取关于硬盘的信息
+const hardDriveGetList = async () => {
+  var hardDriveList = []
+
+  // 直接获取ram
+  var resultDB = await requestingDB.getHardDriveListDB()
   console.log(resultDB)
 
-  // 将获取到的主板列表存储到现在的数组中
+  // 将获取到的硬盘列表存储到现在新的数据中
   for (var i = 0; i < resultDB.length; i++) {
-    var mdObj = {}
-    mdObj.product_id = resultDB[i].product_id
-    mdObj.firm = resultDB[i].firm
-    mdObj.model_name = resultDB[i].model_name
-    mdObj.price = resultDB[i].price
-    mdObj.cpu_plugs_id = resultDB[i].cpu_plugs_id
+    var hardDriveObj = {}
+
+    hardDriveObj.product_id = resultDB[i].product_id
+    hardDriveObj.firm = resultDB[i].firm
+    hardDriveObj.model_name = resultDB[i].model_name
+    hardDriveObj.price = resultDB[i].price
+    hardDriveObj.memory_size = resultDB[i].memory_size
+    hardDriveObj.plugs_type = resultDB[i].plugs_type
     
-    motherBoardList.push(mdObj)
+    hardDriveList.push(hardDriveObj)
   }
-  console.log(motherBoardList)
+  console.log(hardDriveList)
 
   // 动态展示到前端中
-  motherBoardShowList.value = motherBoardList
+  hardDriveShowList.value = hardDriveList
 }
 
-// 获取主板数据表
-motherBoardGetList()
+// 获取硬盘数据表
+hardDriveGetList()
 
 // fn: 点击下一步跳转
 const nextPageClick = () => {
   // 判断当前用户是否已选择
-  if (motherBoardSelector.value === undefined) {
+  if (hardDriveSelector.value === undefined) {
     // 未选择则弹出错误窗口
     showFailToast('请选择一个规格');
   } else {
@@ -172,9 +162,10 @@ const nextPageClick = () => {
     customStore.total_price = totalPriceShow.value
     // 已选择好可以跳转到下一个页面
     console.log("跳转")
-    router.push("/shop-custom-p3")
+    router.push("/shop-custom-p6")
   }
 }
+
 
 </script>
 
@@ -222,7 +213,7 @@ const nextPageClick = () => {
     }
   }
 
-  .motherboard-select {
+  .harddrive-select {
     margin: 30px 30px 0 30px;
     .content {
       border-radius: 15px;
@@ -243,12 +234,12 @@ const nextPageClick = () => {
       }
       .right-box {
         overflow-y: scroll;
-        min-width: 270px;
+        min-width: 290px;
         flex: 1;
         .list {
           .item {
             .title-text {
-              width: 180px;
+              width: 140px;
               display: inline-block;
               white-space: normal;
               overflow: hidden;
@@ -261,6 +252,7 @@ const nextPageClick = () => {
       
     }
   }
+
   .total-price {
     margin: 10px 30px 0 30px;
     border-radius: 15px;
@@ -268,7 +260,6 @@ const nextPageClick = () => {
     background-color: #fff;
     font-size: 28px;
   }
-
   .btn {
     font-size: 48px;
 

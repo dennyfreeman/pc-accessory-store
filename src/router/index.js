@@ -61,6 +61,34 @@ const router = createRouter({
       }
     },
     {
+      path: "/shop-custom-p4",
+      component: () => import("@/views/shop/shop-custom-p4/shop-custom-p4.vue"),
+      meta: {
+        hideTabBar: true
+      }
+    },
+    {
+      path: "/shop-custom-p5",
+      component: () => import("@/views/shop/shop-custom-p5/shop-custom-p5.vue"),
+      meta: {
+        hideTabBar: true
+      }
+    },
+    {
+      path: "/shop-custom-p6",
+      component: () => import("@/views/shop/shop-custom-p6/shop-custom-p6.vue"),
+      meta: {
+        hideTabBar: true
+      }
+    },
+    {
+      path: "/shop-custom-p7",
+      component: () => import("@/views/shop/shop-custom-p7/shop-custom-p7.vue"),
+      meta: {
+        hideTabBar: true
+      }
+    },
+    {
       path: "/order",
       component: () => import("@/views/order/order.vue")
     },
