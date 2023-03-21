@@ -1,12 +1,5 @@
 <template>
-  <div class="shopCustomP2">
-    <!-- 插件 -->
-    <!-- 浮窗 -->
-    <van-toast v-model:show="show" style="padding: 0">
-      <template #message>
-        <van-image :src="image" width="200" height="140" style="display: block" />
-      </template>
-    </van-toast>
+  <div class="shopCustomP3">
 
     <!-- 头部 -->
     <div class="title">
@@ -25,28 +18,28 @@
     <!-- 文字提示 -->
     <div class="attention">
       <div class="text1">
-        <span>下一个是？</span>
+        <span>性能狂战士</span>
       </div>
       <div class="text2">
-        <span>为了适配您心爱的CPU，接下来您要选择您的主板。</span>
+        <span>接下来为您的电脑选择一个强而有力的显卡，带您进入美好的虚拟世界。</span>
       </div>
     </div>
-    
-    <!-- 主板选择 -->
-    <div class="motherboard-select">
+
+    <!-- 显卡选择 -->
+    <div class="gpu-select">
       <div class="content">
         <div class="left-box">
           <!-- 标题 -->
           <div class="title">
-            <span>主板选择</span>
+            <span>显卡选择</span>
           </div>
         </div>
         <div class="right-box">
           <div class="list">
-            <van-radio-group v-model="motherBoardSelector">
+            <van-radio-group v-model="gpuSelector">
               <van-cell-group inset>
-                <div class="item" v-for="(item, index) in motherBoardShowList" :key="index">
-                  <van-cell clickable @click="motherGetProductId(index, item.product_id, item)">
+                <div class="item" v-for="(item, index) in gpuShowList" :key="index">
+                  <van-cell clickable @click="gpuGetProductId(index, item.product_id, item)">
                     <template #right-icon>
                       <van-radio :name = index />
                     </template>
@@ -64,23 +57,6 @@
       </div>
     </div>
 
-    <!-- 价格总计 -->
-    <div class="total-price">
-      <span>现价格：</span>
-      <span>￥{{ totalPriceShow }}</span>
-    </div>
-
-    <!-- 下一步按钮 -->
-    <div class="btn-nextpage">
-      <div class="btn">
-        <van-button 
-          type="primary" 
-          size="large"
-          color="linear-gradient(270deg, #84fab0 0%, #8fd3f4 100%)"
-          @click="nextPageClick"
-          >下一步</van-button>
-      </div>
-    </div>
 
   </div>
 </template>
@@ -106,73 +82,56 @@ const customStore = userCustomStore()
 // 获取当前套餐的产品信息
 console.log(customStore)
 
-// 获取当前套餐中cpu的接口类型
-const cpu_plugs_id = customStore.customMes.products?.cpu.plugs_id
-console.log(cpu_plugs_id)
-
-// 动态获取当前选择的主板
-const motherBoardSelector = ref()
-// 动态展示主板列表
-const motherBoardShowList = ref([])
+// 动态展示GPU列表
+const gpuShowList = ref([])
+// 动态获取当前选择的GPU
+const gpuSelector = ref()
 // 动态展示总价格
 const totalPriceShow = ref(customStore.total_price)
 
-// fn: 获取当前点击的主板信息
-const motherGetProductId = (index, motherboard_product_id, product_mes) => {
+// fn: 获取当前点击的GPU信息
+const gpuGetProductId = (index, gpu_product_id, product_mes) => {
   var productMes = product_mes
-  motherBoardSelector.value = index
-  // 获取当前主板的价格
-  var motherboard_price = productMes.price
+  gpuSelector.value = index
+  // 获取当前GPU的价格
+  var gpu_price = productMes.price
 
   // 把该信息修改到store中的套餐信息中
-  customStore.customMes.products.motherboard = productMes
+  customStore.customMes.products.gpu = productMes
   // 总价格
-  customStore.total_price = customStore.total_price + motherboard_price
+  customStore.total_price = customStore.total_price + gpu_price
   totalPriceShow.value = customStore.total_price
-  console.log("修改store中的主板", customStore)
+  console.log("修改store中的gpu", customStore)
 }
 
-// fn: 从数据库中获取关于主板的信息
-const motherBoardGetList = async () => {
-  var motherBoardList = []
-  var plugs = cpu_plugs_id
+// fn: 从数据库中获取关于显卡的信息
+const gpuGetList = async () => {
+  var gpuList = []
+  
+  // 直接获取GPU
+  var resultDB = await requestingDB.getGPUListDB()
 
-  // 根据cpu接口类型获取主板
-  var resultDB = await requestingDB.getMotherBoardListDB(plugs)
-  console.log(resultDB)
-
-  // 将获取到的主板列表存储到现在的数组中
+  // 从获取到GPU列表存储到现在的数组中
   for (var i = 0; i < resultDB.length; i++) {
-    var mdObj = {}
-    mdObj.product_id = resultDB[i].product_id
-    mdObj.firm = resultDB[i].firm
-    mdObj.model_name = resultDB[i].model_name
-    mdObj.price = resultDB[i].price
-    mdObj.cpu_plugs_id = resultDB[i].cpu_plugs_id
+    var gpuObj = {}
+
+    gpuObj.product_id = resultDB[i].product_id
+    gpuObj.firm = resultDB[i].firm
+    gpuObj.model_name = resultDB[i].model_name
+    gpuObj.price = resultDB[i].price
+    gpuObj.plugs_id = resultDB[i].plugs_id
+    gpuObj.recommended_prower = resultDB[i].recommended_prower
     
-    motherBoardList.push(mdObj)
+    gpuList.push(gpuObj)
   }
-  console.log(motherBoardList)
+  console.log(gpuList)
 
   // 动态展示到前端中
-  motherBoardShowList.value = motherBoardList
+  gpuShowList.value = gpuList
 }
 
-// 获取主板数据表
-motherBoardGetList()
-
-// fn: 点击下一步跳转
-const nextPageClick = () => {
-  // 判断当前用户是否已选择
-  if (motherBoardSelector.value === undefined) {
-    // 未选择则弹出错误窗口
-    showFailToast('请选择一个规格');
-  } else {
-    // 已选择好可以跳转到下一个页面
-    console.log("跳转")
-    router.push("/shop-custom-p3")
-  }
-}
+// 获取GPU数据表
+gpuGetList()
 
 </script>
 
@@ -219,8 +178,7 @@ const nextPageClick = () => {
       font-size: 24px;
     }
   }
-
-  .motherboard-select {
+  .gpu-select {
     margin: 30px 30px 0 30px;
     .content {
       border-radius: 15px;
@@ -258,25 +216,5 @@ const nextPageClick = () => {
       
       
     }
-  }
-  .total-price {
-    margin: 10px 30px 0 30px;
-    border-radius: 15px;
-    padding: 10px 20px;
-    background-color: #fff;
-    font-size: 28px;
-  }
-
-  .btn {
-    font-size: 48px;
-
-    --van-button-large-height: 100px;
-    --van-button-default-font-size: 24px;
-
-    margin: 0 auto;
-    margin-top: 30px;
-    width: 80%;
-    -webkit-box-shadow: 7px 11px 10px 1px rgba(0,0,0,0.225); 
-    box-shadow: 7px 11px 10px 1px rgba(0,0,0,0.225);
   }
 </style>

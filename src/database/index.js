@@ -106,18 +106,30 @@ class requestingDB {
 
   // 查询gpu表，对标gpu接口
   getGPUListDB(plugs = "") {
-    return new Promise((resolve, reject) => {
-      db.collection(collectionPcStoreGPUList)
-      .where({
-        "plugs_id": plugs
+    if (plugs) {
+      return new Promise((resolve, reject) => {
+        db.collection(collectionPcStoreGPUList)
+        .where({
+          "plugs_id": plugs
+        })
+        .get()
+        .then(res => {
+          resolve(res.data)
+        }).catch(err => {
+          reject(err)
+        })
       })
-      .get()
-      .then(res => {
-        resolve(res.data)
-      }).catch(err => {
-        reject(err)
+    } else {
+      return new Promise((resolve, reject) => {
+        db.collection(collectionPcStoreGPUList)
+        .get()
+        .then(res => {
+          resolve(res.data)
+        }).catch(err => {
+          reject(err)
+        })
       })
-    })
+    }
   }
 
   // 查询硬盘表
