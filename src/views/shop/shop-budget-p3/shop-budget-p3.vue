@@ -347,6 +347,16 @@ const cpuGetList = async () => {
 
   // 动态展示到前端中
   cpuShowList.value = cpuList
+
+  // 将store中已选择好的展示出来
+  for (var i = 0; i < cpuList.length; i++) {
+    // 判断与store中相同的id
+    var product_id = productsStore.cpu.product_id
+    if (cpuList[i].product_id === product_id) {
+      cpuSelector.value = i
+    }
+  }
+
 }
 
 // fn: 从数据库中获取关于gpu的信息
@@ -376,6 +386,15 @@ const gpuGetList = async () => {
 
   // 动态展示到前端中
   gpuShowList.value = gpuList
+
+  // 将store中已选择好的展示出来
+  for (var i = 0; i < gpuList.length; i++) {
+    // 判断与store中相同的id
+    var product_id = productsStore.gpu.product_id
+    if (gpuList[i].product_id === product_id) {
+      gpuSelector.value = i
+    }
+  }
 }
 
 // fn: 从数据库中获取关于硬盘的信息
@@ -403,6 +422,15 @@ const hardDriveGetList = async () => {
 
   // 动态展示到前端中
   hardDriveShowList.value = hardDriveList
+
+  // 将store中已选择好的展示出来
+  for (var i = 0; i < hardDriveList.length; i++) {
+    // 判断与store中相同的id
+    var product_id = productsStore.harddrive.product_id
+    if (hardDriveList[i].product_id === product_id) {
+      hardDriveSelector.value = i
+    }
+  }
 }
 
 // fn: 从数据库中获取关于主板的信息
@@ -430,6 +458,15 @@ const motherBoardGetList = async () => {
 
   // 动态展示到前端中
   motherBoardShowList.value = motherBoardList
+
+  // 将store中已选择好的展示出来
+  for (var i = 0; i < motherBoardList.length; i++) {
+    // 判断与store中相同的id
+    var product_id = productsStore.motherboard.product_id
+    if (motherBoardList[i].product_id === product_id) {
+      motherBoardSelector.value = i
+    }
+  }
 }
 
 // fn: 从数据库中获取关于电源的信息
@@ -457,6 +494,15 @@ const powerGetList = async () => {
 
   // 动态展示到前端中
   powerShowList.value = powerList
+
+  // 将store中已选择好的展示出来
+  for (var i = 0; i < powerList.length; i++) {
+    // 判断与store中相同的id
+    var product_id = productsStore.power.product_id
+    if (powerList[i].product_id === product_id) {
+      powerSelector.value = i
+    }
+  }
 }
 
 // fn: 从数据库中获取关于内存条的信息
@@ -481,6 +527,15 @@ const ramGetList = async () => {
 
   // 动态展示到前端中
   ramShowList.value = ramList
+
+  // 将store中已选择好的展示出来
+  for (var i = 0; i < ramList.length; i++) {
+    // 判断与store中相同的id
+    var product_id = productsStore.ram.product_id
+    if (ramList[i].product_id === product_id) {
+      ramSelector.value = i
+    }
+  }
 }
 
 const nextPageClick = () => {
