@@ -132,6 +132,13 @@ const router = createRouter({
       component: () => import("@/views/profile/profile.vue")
     },
     {
+      path: "/pw-change",
+      component: () => import("@/views/profile/pw-change/pw-change.vue"),
+      meta: {
+        hideTabBar: true
+      }
+    },
+    {
       path: "/login",
       component: () => import("@/views/login/login.vue"),
       meta: {

@@ -172,6 +172,10 @@ const submitComment = () => {
   requestingDB.updateOrderComment(order_id, commentMes)
 
   // 提交成功后，退出该弹窗
+  showComment.value = false
+
+  // 刷新一次列表
+  orderHadPay()
 }
 
 

@@ -278,6 +278,23 @@ class requestingDB {
     })
   }
 
+  // 删除对应订单
+  deleteOrder(order_id) {
+    return new Promise((resolve, reject) => {
+      db.collection(collectionPcStoreOrderList)
+      .where({
+        "order_id": order_id
+      })
+      .remove()
+      .then(res => {
+        console.log(res)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    })
+  }
+
 }
 
 

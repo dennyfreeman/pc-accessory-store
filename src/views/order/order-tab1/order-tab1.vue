@@ -1,5 +1,13 @@
 <template>
   <div class="orderTab1">
+    <!-- 插件 -->
+    <!-- 浮窗 -->
+    <van-toast v-model:show="show" style="padding: 0">
+      <template #message>
+        <van-image :src="image" width="200" height="140" style="display: block" />
+      </template>
+    </van-toast>
+
     <button @click="getBtn">获取订单</button>
     <van-cell-group inset>
       <div class="list" v-for="(item, index) in showOrderUnPayList" :key="index">
@@ -18,7 +26,7 @@
               <!-- 按钮 -->
               <div class="btn">
                 <van-button type="primary" size="mini" @click="confirmPay(item)">确认支付</van-button>
-                <van-button type="primary" size="mini">删除</van-button>
+                <van-button type="primary" size="mini" @click="deleteOrder(item)">删除</van-button>
               </div>
             </div>
           </template>
@@ -54,6 +62,7 @@ import requestingDB from "@/database/index"
 import userLogMessage from "@/store/models/user-mes"
 import userOrderStore from "@/store/models/user-order/user-order"
 import { ref } from "vue";
+import { showSuccessToast } from 'vant';
 
 const router = useRouter()
 
@@ -75,6 +84,7 @@ const orderUnPay = async () => {
   // 获取待支付订单
   var resultDB = await requestingDB.getOrderListDB(userId, order_status)
   console.log(resultDB)
+  showOrderUnPayList.value = []
 
   for (var i = 0; i < resultDB.length; i++) {
     var orderUnPayObj = {}
@@ -105,6 +115,16 @@ const confirmPay = (orderToPay) => {
 
 
 // 当用户点击删除
+const deleteOrder = (orderToDel) => {
+  console.log(orderToDel)
+  // 根据订单的id删除相对应的订单
+  var order_id = orderToDel.order_id
+  requestingDB.deleteOrder(order_id)
+
+  // 弹出删除成功弹窗，并刷新一次
+  showSuccessToast('成功文案');
+  orderUnPay()
+}
 
 
 // 点击获取当前未支付订单
