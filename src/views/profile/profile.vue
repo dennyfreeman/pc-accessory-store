@@ -37,13 +37,13 @@
     <div class="user-text">
       <!-- 用户名 -->
       <div class="user-name">
-        <span>用户名：</span>
-        <span>{{ userNameShow }}</span>
+        <span class="title">用户名：</span>
+        <span class="text">{{ userNameShow }}</span>
       </div>
       <!-- 用户id -->
       <div class="user-id">
-        <span>用户id：</span>
-        <span>{{ userIdShow }}</span>
+        <span class="title">用户id：</span>
+        <span class="text">{{ userIdShow }}</span>
       </div>
     </div>
 
@@ -155,10 +155,27 @@ const pwChangePageClick = () => {
       width: 50%;
       padding: 10px;
       border-right: 1px solid #b0b0b0;
+      .title {
+        display: block;
+      }
+      .text {
+        display: block;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
     }
     .user-id {
       width: 50%;
       padding: 10px;
+      .title {
+        display: block;
+      }
+      .text {
+        display: block;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
     }
   }
 

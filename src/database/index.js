@@ -63,6 +63,36 @@ class requestingDB {
     })
   }
 
+  // 根据id获取用户表信息
+  getUserMesDBById(userId) {
+    return new Promise((resolve, reject) => {
+      db.collection(collectionPcStoreUserList)
+      .where({
+        "_id": userId
+      })
+      .get()
+      .then(res => {
+        // 返回数据给前台
+        resolve(res.data)
+      }).catch(err => {
+        reject(err)
+      })
+    })
+  }
+
+  // 更新用户密码
+  updateUserPw(userId, userPw) {
+    return new Promise((resolve, reject) => {
+      db.collection(collectionPcStoreUserList)
+      .where({
+        _id: userId
+      })
+      .update({
+        user_pw: userPw
+      })
+    })
+  }
+
   // 查询套餐表
   getComboListDB(price) {
     return new Promise((resolve, reject) => {

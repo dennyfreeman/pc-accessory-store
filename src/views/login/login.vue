@@ -78,6 +78,7 @@ const confirmLogMes = async (userN, userP) => {
       showToast('登录成功')
       // 将用户的id录入store中
       userLog.userId = resultDB[0]._id
+      userLog.userName = resultDB[0].user_name
       // 然后返回主页shop
       // 3 step
       router.push({

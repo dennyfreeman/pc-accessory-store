@@ -57,6 +57,10 @@
 import userLogMessage from "@/store/models/user-mes"
 import { useRouter } from "vue-router";
 
+// 导入数据表
+import requestingDB from "@/database/index"
+
+
 const router = useRouter()
 // 获取当前登录信息
 // 从store获取当前用户的id

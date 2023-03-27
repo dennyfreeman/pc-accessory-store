@@ -29,7 +29,7 @@ const userLog = userLogMessage()
 /**
  * 模拟登录数据，之后记得删除
  */
-userLog.userId = "loged"
+// userLog.userId = "loged"
 
 const useridLoged = userLog.userId
 
