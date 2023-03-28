@@ -56,7 +56,7 @@
       </div>
       <!-- 其他信息 -->
       <div class="other-setting btn">
-        <van-cell title="其他信息" is-link icon="setting-o">
+        <van-cell title="其他信息" is-link icon="setting-o" @click="otherMessageClick">
         </van-cell>
       </div>
     </div>
@@ -88,6 +88,11 @@ const userIdShow = ref(userId)
 const pwChangePageClick = () => {
   console.log("点击")
   router.push("/pw-change")
+}
+
+// fn: 点击其他信息前往其他信息修改页面
+const otherMessageClick = () => {
+  router.push("/other-mes")
 }
 
 </script>

@@ -47,10 +47,14 @@
     <!-- 确认提交 -->
     <!-- 按钮 -->
     <div class="btn-list">
-      <div class="confirm btn">
+      <div class="btn">
         <!-- 确认支付 -->
         <van-button type="primary" @click="commit">确认修改</van-button>
       </div>
+      <div class="btn">
+        <!-- 确认支付 -->
+        <van-button type="primary" @click="backClick">返回</van-button>
+      </div> 
     </div>
 
   </div>
@@ -157,6 +161,10 @@ const commit = async () => {
   }
 }
 
+// fn: 点击返回按钮
+const backClick = () => {
+  router.back()
+}
 
 </script>
 
@@ -223,6 +231,7 @@ const commit = async () => {
   margin-top: 30px;
   .btn {
     display: flex;
+    margin-bottom: 10px;
     flex-direction: column;
     justify-content: space-between;
     --van-button-normal-font-size: 20px;

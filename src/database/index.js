@@ -80,6 +80,13 @@ class requestingDB {
     })
   }
 
+  // 直接查询用户表
+  getUserAllMes() {
+    return new Promise((resolve, reject) => {
+      db.collection
+    })
+  }
+
   // 更新用户密码
   updateUserPw(userId, userPw) {
     return new Promise((resolve, reject) => {
