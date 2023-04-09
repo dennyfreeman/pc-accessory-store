@@ -55,7 +55,7 @@
         </van-cell>
       </div>
       <!-- 其他信息 -->
-      <div class="other-setting btn">
+      <div class="other-setting btn" @click="otherMesChangePageClick">
         <van-cell title="其他信息" is-link icon="setting-o">
         </van-cell>
       </div>
@@ -84,11 +84,17 @@ const userId = userMesStore.userId
 const userNameShow = ref(userName)
 const userIdShow = ref(userId)
 
-// fn: 点击修改密码前往修改密码页面
+// fn: 点击前往修改密码页面
 const pwChangePageClick = () => {
-  console.log("点击")
   router.push("/pw-change")
 }
+
+// fn：点击前往其他信息页面
+const otherMesChangePageClick = () => {
+  router.push("/other-mes-change")
+}
+
+
 
 </script>
 

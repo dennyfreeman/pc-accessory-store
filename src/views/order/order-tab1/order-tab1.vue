@@ -8,7 +8,6 @@
       </template>
     </van-toast>
 
-    <button @click="getBtn">获取订单</button>
     <van-cell-group inset>
       <div class="list" v-for="(item, index) in showOrderUnPayList" :key="index">
         <van-cell>
@@ -127,17 +126,15 @@ const deleteOrder = (orderToDel) => {
 }
 
 
-// 点击获取当前未支付订单
-const getBtn = () => {
-  orderUnPay()
-}
-
+// 获取当前未支付订单
+orderUnPay()
 
 
 </script>
 
 <style lang="less" scoped>
 .orderTab1 {
+  margin-top: 10px;
   padding-bottom: 60px;
 }
 

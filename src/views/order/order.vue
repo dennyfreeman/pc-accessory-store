@@ -79,6 +79,7 @@ const orderListActive = ref(0)
 }
 
 .show-order {
+  margin-top: 15px;
   .list {
     .right-content {
       height: 100%;

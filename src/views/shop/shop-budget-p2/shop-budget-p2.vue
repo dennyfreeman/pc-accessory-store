@@ -15,11 +15,6 @@
       </div>
     </div>
 
-    <div>
-      <button @click="getCombo">获取套餐</button>
-      <!-- <div>{{ comboNewList }}</div> -->
-    </div>
-
     <!-- toast插件 -->
     <van-toast v-model:show="show" style="padding: 0">
       <template #message>
@@ -290,7 +285,6 @@ const comboNewList = ref([])
 
 // 根据金额大小，查询数据库是否存在更小的套餐
 // 查询现有套餐的所有金额，并归类一个数组里
-  
 // fn：从数据库中获取数据
 const budgetComboGetList = async () => {
   // 预算
@@ -322,10 +316,7 @@ const budgetComboGetList = async () => {
 }
  
 // 1 调用数据库并获取到符合预算的新数据
-// 这里价格按钮，防止过度调用数据库
-const getCombo = () => {
-  budgetComboGetList()
-}
+budgetComboGetList()
 
 // 2 让用户选择一个套餐,然后再跳转到下一个页面
 // 用户点击某个套餐，显示出详细遮蔽层
@@ -363,7 +354,6 @@ const nextPageClick = () => {
     console.log(budgetStore.comboMes)
     router.push("/shop-budget-p3")
   } else {
-    
     if (!comboMesList[0]) {
       // 若无任何套餐可供选择，则让用户跳转回去上一个页面
       showDialog({

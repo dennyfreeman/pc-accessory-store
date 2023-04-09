@@ -6,7 +6,6 @@
       <img src="https://fastly.jsdelivr.net/npm/@vant/assets/apple-3.jpeg" />
     </van-dialog>
 
-    <button @click="getBtn">获取订单</button>
     <div class="list-content">
       <van-cell-group inset>
         <div class="list" v-for="(item, index) in showOrderHadPayList" :key="index">
@@ -88,7 +87,7 @@ const showOrderHadPayList = ref([])
 // 根据用户的id获取相对应的订单表
 const orderHadPay = async () => {
 
-  // 获取待支付订单
+  // 获取待收货订单
   var resultDB = await requestingDB.getOrderListDB(userId, order_status)
   console.log(resultDB)
 
@@ -140,15 +139,17 @@ const confirmReceive = (orderId) => {
 }
 
 
-
-
-// 临时功能，点击获取订单信息
-const getBtn = () => {
-  orderHadPay()
-}
+// 获取订单信息
+orderHadPay()
 </script>
 
 <style lang="less" scoped>
+
+.orderTab2 {
+  margin-top: 10px;
+  padding-bottom: 60px;
+}
+
 .show-order {
   .list-content {
     padding-bottom: 60px;

@@ -139,6 +139,13 @@ const router = createRouter({
       }
     },
     {
+      path: "/other-mes-change",
+      component: () => import("@/views/profile/other-mes-change/other-mes-change.vue"),
+      meta: {
+        hideTabBar: true
+      }
+    },
+    {
       path: "/login",
       component: () => import("@/views/login/login.vue"),
       meta: {

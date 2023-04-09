@@ -1,6 +1,6 @@
 <template>
-  <div class="pwChange">
-    
+  <div class="otherMesChange">
+     
     <!-- 头部 -->
     <div class="title">
       <!-- 背景 -->
@@ -8,7 +8,7 @@
       </div>
       <div class="text">
         <div class="content">
-          <span class="title-name">修改密码</span>
+          <span class="title-name">其他信息</span>
           <van-icon name="like" />
           <span class="user-name">用户名称</span>
         </div>  
@@ -18,28 +18,28 @@
      <!-- 文字提示 -->
      <div class="attention">
       <div class="text1">
-        <span>修改密码</span>
+        <span>其他信息修改</span>
       </div>
       <div class="text2">
-        <span>更复杂的密码往往更安全，但是也要记住了哦。</span>
+        <span>个人信息太过单调，换换味道也可以。</span>
       </div>
     </div>
 
     <!-- 修改密码表单 -->
     <div class="pw-content">
-      <div class="old-pw">
+      <div class="confirm-pw">
         <van-cell-group inset>
-        <!-- 旧密码 -->
-        <van-field v-model="oldPW" type="password" label="旧密码" :error-message="oldErrMes"/>
+        <!-- 验证密码 -->
+        <van-field v-model="confirmPW" type="password" label="验证密码" :error-message="pwErrMes"/>
       </van-cell-group>
       </div>
       <!-- 新密码 -->
-      <div class="new-pw">
+      <div class="new-mes">
         <van-cell-group inset>
-          <!-- 旧密码 -->
-          <van-field v-model="newPW" type="password" label="新密码" />
-          <!-- 旧密码 -->
-          <van-field v-model="confirmPW" type="password" label="确认密码" :error-message="newErrMes"/>
+          <!-- 新名称 -->
+          <van-field v-model="newName" label="新名称" :error-message="nameErrMes"/>
+          <!-- 新联系方式 -->
+          <van-field v-model="newNumber" type="number" label="新联系方式" :error-message="numberErrMes"/>
         </van-cell-group>
       </div>
     </div>
@@ -52,7 +52,6 @@
         <van-button type="primary" @click="commit">确认修改</van-button>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -76,16 +75,17 @@ const userName = userMesStore.userName
 const userId = userMesStore.userId
 
 // 动态获取前端输入的表单信息
-const oldPW = ref('')
-const newPW = ref('')
 const confirmPW = ref('')
+const newName = ref('')
+const newNumber = ref('')
 
 // 错误信息提示文字
-const oldErrMes = ref('')
-const newErrMes = ref('')
+const pwErrMes = ref('')
+const nameErrMes = ref('')
+const numberErrMes = ref('')
 
-// fn: 获取来自当前用户的旧密码
-const oldPwGet = async () => {
+// fn: 获取来自当前用户的密码
+const pwGet = async () => {
   // 根据当前用户id获取
   var user_id = userId
 
@@ -97,65 +97,105 @@ const oldPwGet = async () => {
   var user_pw = resultDB[0].user_pw
  
   // 对比表单判断是否正确
-  var oldPwConfirm = 0
-  if (oldPW.value === user_pw) {
-    console.log("旧密码对比正确")
-    oldPwConfirm = 1
+  var pwConfirm = 0
+  if (confirmPW.value === user_pw) {
+    console.log("密码对比正确")
+    pwConfirm = 1
   } else {
-    console.log("旧密码对比错误")
-    oldPwConfirm = 0
+    console.log("密码对比错误")
+    pwConfirm = 0
   }
 
-  return oldPwConfirm
+  return pwConfirm
 }
 
-// fn: 更新用户密码
-const updateNewPw = async () => {
+// fn：获取来自用户的信息
+const userMesGet = async () => {
+  // 根据当前用户id获取
   var user_id = userId
-  // 获取当前新密码
-  var new_pw = confirmPW.value
 
-  // 更新数据库中用户的密码
-  requestingDB.updateUserPw(user_id, new_pw)
+  // 从数据库中过去旧密码信息
+  var resultDB = await requestingDB.getUserMesDBById(user_id)
 
+  // 获取信息
+  var user_number = resultDB[0].phone
+  var user_name = resultDB[0].user_name
+
+  newName.value = user_name
+  newNumber.value = user_number
 }
 
+// fn: 查询用户名是否重复
+const checkUserName = async () => {
+  var user_name = newName.value
+  var confirmName = 1
 
+  var resultDB = await requestingDB.getUserMesDB(user_name)
 
-// fn: 点击确认修改按钮
+  // 判断是否存在该用户名
+  if (!resultDB[0]) {
+    confirmName = 1
+  } else {
+    confirmName = 0
+  }
+
+  return confirmName
+}
+
+// fn：更新用户信息
+const updateUserMes = async () => {
+  // 获取所有更新的信息
+  var user_name = newName.value
+  var user_number = newNumber.value
+
+  // 更新数据库中的信息
+  requestingDB.updateUserMes(userId, user_name, user_number)
+}
+
+// fn：点击确认修改按钮
 const commit = async () => {
-  var newPwConfirm = 0
-  // 判断旧密码是否匹配正确
-  var oldPwConfirm = await oldPwGet()
-  console.log(oldPwConfirm)
+  // 判断密码是否正确
+  var pwConfirm = await pwGet()
+  var userName = newName.value
+  var userNumber = newNumber.value
 
   // 若不正确提示用户重新输入
-  if (oldPwConfirm === 0) {
-    oldErrMes.value = '旧密码输入错误'
+  if (pwConfirm === 0) {
+    pwErrMes.value = '密码验证错误'
   } else {
-    oldErrMes.value = ''
+    pwErrMes.value = ''
   }
 
-  // 判断两次输入的新密码是否正确
-  if (newPW.value === confirmPW.value) {
-    // 对比正确
-    newPwConfirm = 1
-    newErrMes.value = ''
+  var numberConfirm = 0
+  // 判断用户输入的手机号是否是11位数
+  if (userNumber.length == 11) {
+    numberConfirm = 1
+    numberErrMes.value = ''
   } else {
-    // 对比错误
-    newPwConfirm = 0
-    newErrMes.value = '请检查输入'
+    numberErrMes.value = '手机号格式输入错误'
   }
+
+  // 判断用户的名称是否已存在
+  var confirmName = await checkUserName()
+  if (confirmName === 1) {
+    nameErrMes.value = '用户名已存在'
+  } else {
+    nameErrMes.value = ''
+  }
+
 
   // 判断所有信息是否正确
-  if (oldPwConfirm === 1 && newPwConfirm === 1) {
-    // 当所有信息正确，则更新密码信息
-    updateNewPw()
+  if (pwConfirm === 1 && numberConfirm === 1 && confirmName === 1) {
+    // 当所有信息正确，则立刻更新该用户的信息
+    updateUserMes()
     // 返回上一页
     router.back()
   }
+
 }
 
+// 先获取当前用户信息
+userMesGet()
 
 </script>
 
@@ -206,11 +246,11 @@ const commit = async () => {
 .pw-content {
   margin-top: 30px;
 
-  .old-pw {
+  .confirm-pw {
     --van-cell-font-size: 20px;
     --van-cell-line-height: 40px;
   }
-  .new-pw {
+  .new-mes {
     margin-top: 15px;
     --van-cell-font-size: 20px;
     --van-cell-line-height: 40px;

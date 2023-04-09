@@ -43,10 +43,9 @@
       </div>
     </van-popup>
 
-    <button @click="getBtn">获取订单</button>
     <div class="list-content">
       <van-cell-group inset>
-        <div class="list" v-for="(item, index) in showOrderHadPayList" :key="index">
+        <div class="list" v-for="(item, index) in showOrderComplishList" :key="index">
           <van-cell>
             <template #title>
               <span>创建时间：</span>
@@ -111,29 +110,27 @@ const userName = userLogMessage().userName
 const order_status = 2
 
 // 动态展示订单列表
-const showOrderHadPayList = ref([])
+const showOrderComplishList = ref([])
 
 // 展示评论弹窗监控值
 const showComment = ref(false)
 
 // 根据用户的id获取相对应的订单表
-const orderHadPay = async () => {
-  // 获取待支付订单
+const orderComplish = async () => {
+  // 获取已完成订单
   var resultDB = await requestingDB.getOrderListDB(userId, order_status)
   console.log(resultDB)
 
-  showOrderHadPayList.value = []
+  showOrderComplishList.value = []
   for (var i = 0; i < resultDB.length; i++) {
-    var orderHadPayObj = {}
+    var orderComplishObj = {}
 
-    orderHadPayObj = resultDB[i]
+    orderComplishObj = resultDB[i]
     // 将所有数据保存到前端展示列表中
-    showOrderHadPayList.value.push(orderHadPayObj)
+    showOrderComplishList.value.push(orderComplishObj)
   }
-  console.log(showOrderHadPayList.value)
+  console.log(showOrderComplishList.value)
 }
-
-
 
 // 评价功能
 // 监听对应套餐的评价星
@@ -175,19 +172,19 @@ const submitComment = () => {
   showComment.value = false
 
   // 刷新一次列表
-  orderHadPay()
+  orderComplish()
 }
 
-
-
-// 临时功能，点击获取订单信息
-const getBtn = () => {
-  orderHadPay()
-}
-
+// 获取订单信息
+orderComplish()
 </script>
 
 <style lang="less" scoped>
+.orderTab3 {
+  margin-top: 10px;
+  padding-bottom: 60px;
+}
+
 .show-order {
   .list-content {
     padding-bottom: 60px;

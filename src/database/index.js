@@ -93,6 +93,20 @@ class requestingDB {
     })
   }
 
+  // 更新用户其他信息
+  updateUserMes(userId, userName, userNumber) {
+    return new Promise((resolve, reject) => {
+      db.collection(collectionPcStoreUserList)
+      .where({
+        _id: userId
+      })
+      .update({
+        user_name: userName,
+        phone: userNumber
+      })
+    })
+  }
+
   // 查询套餐表
   getComboListDB(price) {
     return new Promise((resolve, reject) => {

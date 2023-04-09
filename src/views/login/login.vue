@@ -48,16 +48,10 @@ const userLog = userLogMessage()
 // 导入路由
 const router = useRouter()
 
-// 获取到查询数据
-// const result = await requestingDB.getUserMesDB("denny-admin")
-// console.log(result[0])
-// const userMesDb = result[0]
-
 // 获取用户填入信息
 const userName = ref('')
 const userPw = ref('')
 
-// 2 step
 // fn: 验证用户信息
 const confirmLogMes = async (userN, userP) => {
   var confirmUserN = userN
@@ -89,8 +83,7 @@ const confirmLogMes = async (userN, userP) => {
 }
 
 
-// 1 step: 当用户所有信息输入完整时，点击登录返回Shop
-// 发生点击登录
+// 当用户所有信息输入完整时，点击登录返回Shop
 const loginClick = () => {
   if (userName.value === "" || userPw.value === ""){
   // 没填写完整
