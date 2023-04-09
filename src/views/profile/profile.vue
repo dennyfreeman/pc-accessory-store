@@ -89,6 +89,11 @@ const pwChangePageClick = () => {
   router.push("/pw-change")
 }
 
+// fn: 点击前往其他信息页面
+const otherMesChangePageClick = () => {
+  router.push("/other-mes-change")
+}
+
 </script>
 
 <style lang="less" scoped>

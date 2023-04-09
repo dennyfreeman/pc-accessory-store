@@ -83,7 +83,14 @@ class requestingDB {
   // 直接查询用户表
   getUserAllMes() {
     return new Promise((resolve, reject) => {
-      db.collection
+      db.collection(collectionPcStoreUserList)
+      .get()
+      .then(res => {
+        // 返回数据给前台
+        resolve(res.data)
+      }).catch(err => {
+        reject(err)
+      })
     })
   }
 
