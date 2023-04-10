@@ -18,7 +18,7 @@
         <van-button type="primary" size="large" @click="loginClick">登录</van-button>
       </div>
       <div class="signUpBtn item">
-        <van-button type="default" size="large">前往注册</van-button>
+        <van-button type="default" size="large" @click="signUpClick">前往注册</van-button>
       </div>
     </div>
 
@@ -93,6 +93,11 @@ const loginClick = () => {
     // 验证用户信息是否匹配
     confirmLogMes(userName.value, userPw.value)
   }
+}
+
+// 点击前往注册页面
+const signUpClick = () => {
+  router.push("/sign-up")
 }
 
 </script>

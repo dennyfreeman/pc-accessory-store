@@ -121,6 +121,14 @@ class requestingDB {
     })
   }
 
+  // 新增用户信息
+  addUserMes(userMes) {
+    return new Promise((resolve, reject) => {
+      db.collection(collectionPcStoreUserList)
+      .add(userMes)
+    })
+  }
+
   // 查询套餐表
   getComboListDB(price) {
     return new Promise((resolve, reject) => {

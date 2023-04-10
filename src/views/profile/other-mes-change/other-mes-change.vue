@@ -188,10 +188,10 @@ const commit = async () => {
   if (pwConfirm === 1 && numberConfirm === 1 && confirmName === 1) {
     // 当所有信息正确，则立刻更新该用户的信息
     updateUserMes()
+    console.log("first")
     // 返回上一页
     router.back()
   }
-
 }
 
 // 先获取当前用户信息

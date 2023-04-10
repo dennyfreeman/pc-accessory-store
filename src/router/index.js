@@ -151,6 +151,13 @@ const router = createRouter({
       meta: {
         hideTabBar: true
       }
+    },
+    {
+      path: "/sign-up",
+      component: () => import("@/views/sign-up/sign-up.vue"),
+      meta: {
+        hideTabBar: true
+      }
     }
   ]
 })
