@@ -1,25 +1,58 @@
+
+
 {
-  "product_id": "cpu_pcstore_intel_i5_12400f",
-  "total_cores": 6,
-  "total_threads": 12,
-  "max_trubo": "4.40GHz",
+  "mem_type": [
+    {
+      "type": "DDR5",
+      "rate": "5600"
+    },
+    {
+      "type": "DDR4",
+      "rate": "3200"
+    }
+  ],
+  "model_name": "i7-13700K",
+  "other_params": {
+    "ram": "24MB",
+    "instruction_set": "64-bit"
+  },
+  "total_threads": 24,
   "firm": "INTEL",
-  "model_name": "i5-12400F",
+  "max_mem_size": "128GB",
+  "max_prower": 253,
+  "price": 2999,
+  "mark": "19722",
+  "max_trubo": "5.40GHz",
+  "product_id": "cpu_pcstore_intel_i7_13700K",
+  "rated_prower": 125,
+  "total_cores": 16,
+  "cpu_plugs_id": "cpu_md_FCLGA1700_001",
+  "cpu_plugs_marktype": "LGA1700",
+  "cput_plugs_type": "FCLGA1700"
+}
+
+{
+  "product_id": "cpu_pcstore_intel_i7_13700K",
+  "total_cores": 16,
+  "total_threads": 24,
+  "max_trubo": "5.40GHz",
+  "firm": "INTEL",
+  "model_name": "i7-13700K",
   "plugs_type": "FCLGA1700",
   "plugs_marktype": "LGA1700",
   "plugs_id": "cpu_md_FCLGA1700_001",
   "other_params": {
-    "ram": "19MB",
+    "ram": "24MB",
     "instruction_set": "64-bit"
   },
-  "price": 1189,
-  "rated_prower": 65,
-  "max_prower": 117,
+  "price": 2999,
+  "rated_prower": 125,
+  "max_prower": 253,
   "max_mem_size": "128GB",
   "mem_type": [
     {
       "type": "DDR5",
-      "rate": "4800"
+      "rate": "5600"
     },
     {
       "type": "DDR4",

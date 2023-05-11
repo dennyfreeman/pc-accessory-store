@@ -121,7 +121,7 @@ const deleteOrder = (orderToDel) => {
   requestingDB.deleteOrder(order_id)
 
   // 弹出删除成功弹窗，并刷新一次
-  showSuccessToast('成功文案');
+  showSuccessToast('成功删除');
   orderUnPay()
 }
 

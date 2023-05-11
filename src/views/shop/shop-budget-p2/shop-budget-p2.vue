@@ -183,7 +183,7 @@
                 <div class="wrapper" @click.stop @click="showDetail3 = false">
                   <div class="block" >
                     <div class="title">
-                      <span>套餐二  详细信息：</span>
+                      <span>套餐三  详细信息：</span>
                     </div>
                     <!-- 展示详细信息 -->
                     <div class="block_content">

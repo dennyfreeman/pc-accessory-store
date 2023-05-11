@@ -18,3 +18,22 @@
   "score": "270336"
 }
 
+{
+  "product_id": "gpu_pcstore_nv_rtx_3060",
+  "bit": 192,
+  "cude": 3584,
+  "firm": "NVIDIA",
+  "grade": "85",
+  "model_name": "RTX 3060",
+  "other_params": {
+    "pin": "8pin",
+    "plugs_type": "pcie_3",
+    "ram": "12GB",
+    "ram_type": "GDDR6" 
+  },
+  "plugs_id": "pcie_3_mb_001",
+  "price": 2499,
+  "rated_prower": 170,
+  "recommended_prower": "550",
+  "score": "270336"
+}

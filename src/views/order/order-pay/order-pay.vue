@@ -1,5 +1,5 @@
 <template>
-  <div class="orderPay back">
+  <div class="orderPay">
     <!-- 插件 -->
     <!-- 浮窗插件 -->
     <van-toast v-model:show="show" style="padding: 0">
@@ -10,6 +10,7 @@
 
     <!-- 头部 -->
     <div class="title">
+      <div class="back"></div>
       <div class="text">
         <div class="content">
           <span class="title-name">处理订单</span>
@@ -56,9 +57,9 @@
           <van-cell-group inset>
             <van-cell>
               <template #title>
-                <div class="user-mes cell-title">
+                <!-- <div class="user-mes cell-title">
                   <span>用户名：{{ showUserId }}</span>
-                </div>
+                </div> -->
                 <div class="order-id cell-title">
                   <span class="title_name">订单id：</span>
                   <span class="message">{{showOrderId}}</span>
@@ -80,7 +81,8 @@
                   </div>
                 </div>
                 <div class="price">
-                  <span>总价：￥{{ showPrice }}</span>
+                  <span style="color: black;">总价：</span>
+                  <span>￥{{ showPrice }}</span>
                 </div>
               </template>            
             </van-cell>
@@ -198,17 +200,19 @@ const backClick = () => {
 </script>
 
 <style lang="less" scoped>
-.back {
+.title {
+  
+  position: relative;
+
+  .back {
     position: absolute;
     background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
     width: 100%;
-    height: auto;
+    height: 100vh;
 
     z-index: -99;
   }
-
-.title {
-  position: relative;
+  
   .text {
     padding-top: 10px;
     color: #fff;
@@ -260,7 +264,7 @@ const backClick = () => {
     }
 
     .price {
-      margin-top: 10px;
+      margin-top: 30px;
       color: #ff0000;
       font-size: 24px;
     }

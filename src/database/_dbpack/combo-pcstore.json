@@ -50,3 +50,57 @@
     }
   }
 }
+
+
+{
+  "comboId": "combo_pcstore_c003_p_3404",
+  "name": "高端游戏型豪华组合",
+  "desc": "c003_适合高端游戏群体",
+  "total_price": 7871,
+  "products": {
+    "cpu": {
+      "product_id": "cpu_pcstore_intel_i7_13700K",
+      "model_name": "i7-13700K",
+      "firm": "INTEL",
+      "price": 2999,
+      "plugs_id": "cpu_md_FCLGA1700_001"
+    },
+    "gpu": {
+      "product_id": "gpu_pcstore_nv_rtx_3060",
+      "firm": "NVIDIA",
+      "model_name": "RTX 3060",
+      "plugs_id": "pcie_3_mb_001",
+      "price": 2499
+    },
+    "motherboard": {
+      "product_id": "motherboard_pcstore_asus_TX_GAMING_B760M_WIFI_D4",
+      "firm": "asus",
+      "model_name": "TX GAMING B760M WIFI D4",
+      "cpu_plugs_id": "cpu_md_FCLGA1700_001",
+      "price": 1249
+    },
+    "power": {
+      "product_id": "power_segotep_GP700G",
+      "firm": "Segotep",
+      "model_name": "GP700G黑金版电源",
+      "price": 310,
+      "max_power": 600
+    },
+    "ram": {
+      "model_name": "FURY_DDR4_3200_16G",
+      "price": 275,
+      "firm": "Kingston",
+      "DDR": "DDR4",
+      "memory_size": "16GB",
+      "product_id": "mem_pcstore_kingston_FURY_DDR4_3200_16G"
+    },
+    "harddrive": {
+      "product_id": "harddrive_pcstore_Seagate_ST4000DM004",
+      "plugs_type": "SATA",
+      "price": 539,
+      "firm": "Seagate",
+      "model_name": "ST4000DM004",
+      "memory_size": "4TB"
+    }
+  }
+}
